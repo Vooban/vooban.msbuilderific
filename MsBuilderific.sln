@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsBuilderific.Core", "MsBuilderific.Core\MsBuilderific.Core.csproj", "{55D77B74-793D-4BA6-A20C-621CCA91AABD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsBuilderific.Tests", "MsBuilderific.Tests\MsBuilderific.Tests.csproj", "{36393DE9-F1C7-413B-B6D7-46594C5B9B20}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsBuilderific.Core.Tests", "MsBuilderific.Core.Tests\MsBuilderific.Core.Tests.csproj", "{36393DE9-F1C7-413B-B6D7-46594C5B9B20}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsBuilderific.Console", "MsBuilderific.Console\MsBuilderific.Console.csproj", "{168C77F6-7F89-4AC5-A299-8185D615670C}"
 EndProject
