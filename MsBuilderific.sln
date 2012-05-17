@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsBuilderific.Contracts", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsBuilderific.Visitors", "MsBuilderific.Visitors\MsBuilderific.Visitors.csproj", "{A23A03A4-7499-4023-889C-130C501F3BA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsBuilderific.Contracts.Extensions", "MsBuilderific.Common\MsBuilderific.Contracts.Extensions.csproj", "{4015C3CE-BB18-4BCC-ADFB-BD44D41B67BE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsBuilderific.Contracts.Extensions", "MsBuilderific.Contracts.Extensions\MsBuilderific.Contracts.Extensions.csproj", "{4015C3CE-BB18-4BCC-ADFB-BD44D41B67BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
