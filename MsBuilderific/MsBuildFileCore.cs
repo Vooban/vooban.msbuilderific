@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using MsBuilderific.Contracts;
+using MsBuilderific.Contracts.Visitors;
 using MsBuilderific.Extensions;
 using MsBuilderific.Visitors;
 

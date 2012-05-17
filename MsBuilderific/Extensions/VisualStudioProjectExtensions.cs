@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using MsBuilderific.Contracts;
 
 namespace MsBuilderific.Extensions
 {

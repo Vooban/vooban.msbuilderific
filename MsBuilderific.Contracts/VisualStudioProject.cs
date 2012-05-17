@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace MsBuilderific
+namespace MsBuilderific.Contracts
 {
     /// <summary>
     /// Object representing a Visual Studio project
@@ -116,7 +116,8 @@ namespace MsBuilderific
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return other.AssemblyName.Equals(AssemblyName);
+
+            return other.AssemblyName != null && other.AssemblyName.Equals(AssemblyName);
         }
 
         /// <summary>
@@ -127,7 +128,7 @@ namespace MsBuilderific
         /// </returns>
         public override int GetHashCode()
         {
-            return AssemblyName.GetHashCode();
+            return AssemblyName != null ? AssemblyName.GetHashCode() : base.GetHashCode();
         }
 
         /// <summary>

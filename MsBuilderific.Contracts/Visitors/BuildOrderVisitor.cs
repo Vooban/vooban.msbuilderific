@@ -1,4 +1,4 @@
-﻿namespace MsBuilderific.Visitors
+﻿namespace MsBuilderific.Contracts.Visitors
 {
     public abstract class BuildOrderVisitor
     {

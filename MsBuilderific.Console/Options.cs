@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CommandLine;
 using CommandLine.Text;
+using MsBuilderific.Contracts;
 
 namespace MsBuilderific.Console
 {

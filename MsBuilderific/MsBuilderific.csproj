@@ -58,13 +58,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MsBuilderificOptions.cs" />
-    <Compile Include="Visitors\BuildOrderVisitor.cs" />
     <Compile Include="Extensions\VisualStudioProjectExtensions.cs" />
-    <Compile Include="IMsBuilderificOptions.cs" />
     <Compile Include="MsBuildFileCore.cs" />
     <Compile Include="ProjectDependencyFinder.cs" />
     <Compile Include="ProjectLoader.cs" />
-    <Compile Include="ProjectOutputType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -80,7 +77,6 @@
     <Compile Include="Visitors\Build\MsDeployProjectVisitor.cs" />
     <Compile Include="Visitors\Build\MsTestsProjectVisitor.cs" />
     <Compile Include="Visitors\Clean\CleanBuildArtefactsVisitor.cs" />
-    <Compile Include="VisualStudioProject.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -92,7 +88,12 @@
     <None Include="packages.config" />
     <None Include="Resources\msbuildtemplate.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\MsBuilderific.Contracts\MsBuilderific.Contracts.csproj">
+      <Project>{D587634F-B89A-42C6-ADF4-637AC3CA09E2}</Project>
+      <Name>MsBuilderific.Contracts</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

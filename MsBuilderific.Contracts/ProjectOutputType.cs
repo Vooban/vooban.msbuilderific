@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Serialization;
 
-namespace MsBuilderific
+namespace MsBuilderific.Contracts
 {
     /// <summary>
     /// Possible values for projects output type
