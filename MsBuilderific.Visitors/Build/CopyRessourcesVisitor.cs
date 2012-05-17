@@ -1,14 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using MsBuilderific.Contracts;
+using MsBuilderific.Contracts.Extensions.Extensions;
 using MsBuilderific.Contracts.Visitors;
-using MsBuilderific.Extensions;
 
 namespace MsBuilderific.Visitors.Build
 {
     public class CopyRessourcesVisitor : BuildOrderVisitor
     {
+        private readonly IProjectRessourceFinder _ressourceFinder;
+
+        public CopyRessourcesVisitor(IProjectRessourceFinder ressourceFinder)
+        {
+            _ressourceFinder = ressourceFinder;
+        }
+
         public override bool ShallExecute(IMsBuilderificOptions options)
         {
             return options == null || !string.IsNullOrEmpty(options.CopyOutputTo);
@@ -32,9 +37,8 @@ namespace MsBuilderific.Visitors.Build
         {
             var buildBuilder = new StringBuilder();
             var folder = project.GetRelativeFolderPath(options);
-            var ressources = new RessourceFinder(project.Path);
 
-            foreach (var currentRessource in ressources.Parse())
+            foreach (var currentRessource in _ressourceFinder.ExtractRessourcesFromProject(project.Path))
             {
                 if (!string.IsNullOrEmpty(currentRessource))
                 {

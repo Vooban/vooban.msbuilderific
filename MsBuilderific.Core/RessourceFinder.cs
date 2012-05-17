@@ -2,37 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using MsBuilderific.Contracts;
 
-namespace MsBuilderific
+namespace MsBuilderific.Core
 {
     /// <summary>
     /// This class provides .csproj and .vbproj parsing capabilities
     /// </summary>
-    public class RessourceFinder
-
+    public class RessourceFinder : IProjectRessourceFinder
     {
-        #region Private Members
-
-        private readonly String _projectPath;
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Initialize a new instance of the class <see cref="ProjectLoader"/>.
-        /// </summary>
-        /// <param name="projectPath">Path to the .csproj or .vbproj</param>
-        public RessourceFinder(string projectPath)
-        {
-            if (!projectPath.Contains(".csproj") && !projectPath.Contains(".vbproj"))
-                throw new ArgumentException("The project path must be either a CSharp project or VBProject", "projectPath");
-
-            _projectPath = projectPath;
-        }
-
-        #endregion
-
         #region Public methods
 
         /// <summary>
@@ -41,9 +19,15 @@ namespace MsBuilderific
         /// <returns>
         /// An instance of the class <see cref="VisualStudioProject"/> representing the project
         /// </returns>
-        public IEnumerable<String> Parse()
+        public IEnumerable<String> ExtractRessourcesFromProject(string visualStudioProjectPath)
         {
-            var xproject = GetProjectAsXDocument();
+            if (String.IsNullOrEmpty(visualStudioProjectPath))
+                throw new ArgumentNullException("The project path must not be null or empty");
+
+            if (!visualStudioProjectPath.Contains(".csproj") && !visualStudioProjectPath.Contains(".vbproj"))
+                throw new ArgumentException("The project path must be either a CSharp project or VBProject", "projectPath");
+
+            var xproject = GetProjectAsXDocument(visualStudioProjectPath);
 
             if (xproject != null && xproject.Root != null)
             {
@@ -59,7 +43,7 @@ namespace MsBuilderific
                                        RootNamespace = item.Element("RootNamespace").Value,
                                        AssemblyName = item.Element("AssemblyName").Value,
                                        ProjectGuid = Guid.Parse(item.Element("ProjectGuid").Value),
-                                       Path = _projectPath
+                                       Path = visualStudioProjectPath
                                    }).FirstOrDefault();
 
                 if (projectInfo != null)
@@ -69,7 +53,7 @@ namespace MsBuilderific
                                          select new{
                                                        LastGenOutput = item.Element("LastGenOutput").Value,
                                                        AssemblyName = projectInfo.AssemblyName,
-                                                       ProjectPath = _projectPath
+                                                       ProjectPath = visualStudioProjectPath
                                                    });
 
                         var ressources = ressourceInfo.Select((p) =>
@@ -99,9 +83,9 @@ namespace MsBuilderific
         /// <returns>
         /// The <see cref="XDocument"/> object
         /// </returns>
-        private XDocument GetProjectAsXDocument()
+        private XDocument GetProjectAsXDocument(string visualStudioProjectPath)
         {
-            var xproject = XDocument.Load(_projectPath);
+            var xproject = XDocument.Load(visualStudioProjectPath);
 
             if (xproject.Root != null)
             {

@@ -5,17 +5,13 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{55D77B74-793D-4BA6-A20C-621CCA91AABD}</ProjectGuid>
+    <ProjectGuid>{A23A03A4-7499-4023-889C-130C501F3BA0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MsBuilderific.Core</RootNamespace>
-    <AssemblyName>MsBuilderific.Core</AssemblyName>
+    <RootNamespace>MsBuilderific.Visitors</RootNamespace>
+    <AssemblyName>MsBuilderific.Visitors</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -25,7 +21,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\MsBuilderific.Core.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -36,18 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="QuickGraph">
-      <HintPath>..\packages\QuickGraph.3.6.61119.7\lib\net4\QuickGraph.dll</HintPath>
-    </Reference>
-    <Reference Include="QuickGraph.Data">
-      <HintPath>..\packages\QuickGraph.3.6.61119.7\lib\net4\QuickGraph.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="QuickGraph.Graphviz">
-      <HintPath>..\packages\QuickGraph.3.6.61119.7\lib\net4\QuickGraph.Graphviz.dll</HintPath>
-    </Reference>
-    <Reference Include="QuickGraph.Serialization">
-      <HintPath>..\packages\QuickGraph.3.6.61119.7\lib\net4\QuickGraph.Serialization.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -57,28 +40,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MsBuildFileCore.cs" />
-    <Compile Include="ProjectDependencyFinder.cs" />
-    <Compile Include="ProjectLoader.cs" />
+    <Compile Include="Build\CopyMsDeployPackagesVisitor.cs" />
+    <Compile Include="Build\CopyProjectOutputVisitor.cs" />
+    <Compile Include="Build\CopyRessourcesVisitor.cs" />
+    <Compile Include="Build\DeleteBinAfterPackagingVisitor.cs" />
+    <Compile Include="Build\MsBuildProjectVisitor.cs" />
+    <Compile Include="Build\MsDeployProjectVisitor.cs" />
+    <Compile Include="Build\MsTestsProjectVisitor.cs" />
+    <Compile Include="Clean\CleanBuildArtefactsVisitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="RessourceFinder.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="Resources\msbuildtemplate.xml" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\MsBuilderific.Common\MsBuilderific.Contracts.Extensions.csproj">
+      <Project>{4015C3CE-BB18-4BCC-ADFB-BD44D41B67BE}</Project>
+      <Name>MsBuilderific.Contracts.Extensions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MsBuilderific.Contracts\MsBuilderific.Contracts.csproj">
       <Project>{D587634F-B89A-42C6-ADF4-637AC3CA09E2}</Project>
       <Name>MsBuilderific.Contracts</Name>

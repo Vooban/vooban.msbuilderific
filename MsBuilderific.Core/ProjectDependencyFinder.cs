@@ -7,7 +7,7 @@ using MsBuilderific.Contracts;
 using QuickGraph;
 using QuickGraph.Serialization;
 
-namespace MsBuilderific
+namespace MsBuilderific.Core
 {
     /// <summary>
     /// Finds the dependencies between the projects provided and generate the right build order

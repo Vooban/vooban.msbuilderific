@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using MsBuilderific.Contracts;
+using MsBuilderific.Contracts.Extensions.Extensions;
 using MsBuilderific.Contracts.Visitors;
-using MsBuilderific.Extensions;
 
 namespace MsBuilderific.Visitors.Build
 {
@@ -33,7 +33,7 @@ namespace MsBuilderific.Visitors.Build
             return VisitBuildWebProjectTarget(project, options);
         }
 
-        private string AddCopyPackagesInformation(VisualStudioProject project, IMsBuilderificOptions options, bool uniqueOutputPath, string configuration = "$(Configuration)")
+        private static string AddCopyPackagesInformation(VisualStudioProject project, IMsBuilderificOptions options, bool uniqueOutputPath, string configuration = "$(Configuration)")
         {
             var buildBuilder = new StringBuilder();
             var folder = project.GetRelativeFolderPath(options);

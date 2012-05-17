@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using MsBuilderific.Contracts;
+using MsBuilderific.Contracts.Extensions.Extensions;
 using MsBuilderific.Contracts.Visitors;
-using MsBuilderific.Extensions;
 
 namespace MsBuilderific.Visitors.Build
 {
@@ -46,10 +46,10 @@ namespace MsBuilderific.Visitors.Build
             var buildBuilder = new StringBuilder();
             var folder = project.GetRelativeFolderPath(options);
 
-            var temp = "";
             if (!uniqueOutputPath)
             {
                 // In a non web project, we look in the configuration folder, otherwise in the bin folder
+                string temp;
                 if (!project.IsWebProject)
                     temp = string.Format("{0}\\bin\\$(Configuration)\\{1}.{2}", folder, project.AssemblyName, capitalizedExt.ToLower());
                 else
@@ -58,7 +58,6 @@ namespace MsBuilderific.Visitors.Build
                 buildBuilder.AppendFormat("		<Copy SourceFiles=\"{0}\" DestinationFolder=\"$(DestinationFolder)\" Condition=\"Exists('{0}') AND $(CopyEnabled) AND $(Copy{1})\" ContinueOnError=\"$(ContinueOnError)\" OverwriteReadOnlyFiles=\"True\" SkipUnchangedFiles=\"True\" />", temp, capitalizedExt);
                 buildBuilder.AppendLine();
 
-                temp = "";
                 if (!project.IsWebProject)
                     temp = string.Format("{0}\\bin\\$(Configuration)\\CodeContracts\\{1}.Contracts.{2}", folder, project.AssemblyName, capitalizedExt.ToLower());
                 else

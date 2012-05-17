@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using MsBuilderific.Contracts;
 using MsBuilderific.Contracts.Visitors;
-using MsBuilderific.Extensions;
-using MsBuilderific.Visitors;
 
-namespace MsBuilderific
+namespace MsBuilderific.Core
 {
     /// <summary>
     /// Class reponsible for generating the MsBuild file
@@ -17,8 +16,7 @@ namespace MsBuilderific
     {
         #region Private Members
 
-        private readonly IMsBuilderificOptions _options;
-        private readonly List<BuildOrderVisitor> _visitors = new List<BuildOrderVisitor>();
+        private readonly List<IBuildOrderVisitor> _visitors = new List<IBuildOrderVisitor>();
 
         #endregion
 
@@ -28,15 +26,6 @@ namespace MsBuilderific
 
         #region Constructors
 
-        /// <summary>
-        /// Initialize a new instance of the <see cref="MsBuildFileGenerator"/> class.
-        /// </summary>
-        /// <param name="options">The option used by the core to create the msbuild file</param>        
-        public MsBuildFileCore(IMsBuilderificOptions options)
-        {
-            _options = options;
-        }
-
         #endregion
 
         #region "Visitor pattern"
@@ -45,7 +34,7 @@ namespace MsBuilderific
         /// Accepts a new visitor into the msbuild file's generation core 
         /// </summary>
         /// <param name="newVisitor">The new visitor which will be called in the file generation process</param>
-        public void AcceptVisitor(BuildOrderVisitor newVisitor)
+        public void AcceptVisitor(IBuildOrderVisitor newVisitor)
         {
             if (newVisitor == null)
                 throw new ArgumentNullException("newVisitor", "Vous ne pouvez pas ajouter un visiteur nul.");
@@ -73,7 +62,8 @@ namespace MsBuilderific
         /// <param name="dependencyOrder">
         /// The order in which the MsBuildScript shall be generated
         /// </param>
-        public void WriteBuildScript(List<VisualStudioProject> dependencyOrder)
+        /// <param name="options">The options that will be passed to the visitors</param>
+        public void WriteBuildScript(List<VisualStudioProject> dependencyOrder, IMsBuilderificOptions options)
         {
             if (dependencyOrder == null)
                 return;
@@ -86,35 +76,38 @@ namespace MsBuilderific
             var preServiceBuilder = new StringBuilder();
             var postServiceBuilder = new StringBuilder();
 
-            foreach (var vbproject in dependencyOrder)
+            foreach (var vsnetProject in dependencyOrder)
             {
-                if (vbproject == null)
+                if (vsnetProject == null)
                     continue;
 
-                _visitors.ForEach(v =>
+                var currentVisualStudioProject = vsnetProject;
+
+                var sortedVisitors = _visitors.OrderBy(s => s.Order);
+                sortedVisitors.ToList().ForEach(v =>
                                       {
-                                          if (v == null || !v.ShallExecute(_options))
+                                          if (v == null || !v.ShallExecute(options))
                                               return;
 
-                                          cleanBuilder.AppendLine(v.PreVisitCleanTarget(vbproject, _options));
-                                          cleanBuilder.AppendLine(v.VisitCleanTarget(vbproject, _options));
-                                          cleanBuilder.AppendLine(v.PostVisitCleanTarget(vbproject, _options));
+                                          cleanBuilder.AppendLine(v.PreVisitCleanTarget(currentVisualStudioProject, options));
+                                          cleanBuilder.AppendLine(v.VisitCleanTarget(currentVisualStudioProject, options));
+                                          cleanBuilder.AppendLine(v.PostVisitCleanTarget(currentVisualStudioProject, options));
 
-                                          preBuildBuilder.AppendLine(v.PreVisitBuildTarget(vbproject, _options));
-                                          if (vbproject.IsWebProject)
-                                              buildBuilder.AppendLine(v.VisitBuildWebProjectTarget(vbproject, _options));
-                                          else if (vbproject.OutputType != ProjectOutputType.Library.ToString())
-                                              buildBuilder.AppendLine(v.VisitBuildExeProjectTarget(vbproject, _options));
+                                          preBuildBuilder.AppendLine(v.PreVisitBuildTarget(currentVisualStudioProject, options));
+                                          if (currentVisualStudioProject.IsWebProject)
+                                              buildBuilder.AppendLine(v.VisitBuildWebProjectTarget(currentVisualStudioProject, options));
+                                          else if (currentVisualStudioProject.OutputType != ProjectOutputType.Library.ToString())
+                                              buildBuilder.AppendLine(v.VisitBuildExeProjectTarget(currentVisualStudioProject, options));
                                           else
-                                              buildBuilder.AppendLine(v.VisitBuildLibraryProjectTarget(vbproject, _options));
-                                          buildBuilder.AppendLine(v.VisitBuildAllTypeTarget(vbproject, _options));
-                                          postBuildBuilder.AppendLine(v.PostVisitBuildTarget(vbproject, _options));
+                                              buildBuilder.AppendLine(v.VisitBuildLibraryProjectTarget(currentVisualStudioProject, options));
+                                          buildBuilder.AppendLine(v.VisitBuildAllTypeTarget(currentVisualStudioProject, options));
+                                          postBuildBuilder.AppendLine(v.PostVisitBuildTarget(currentVisualStudioProject, options));
 
-                                          if (_options.ServiceSpecificTarget && vbproject.IsWebProject)
+                                          if (options.ServiceSpecificTarget && currentVisualStudioProject.IsWebProject)
                                           {
-                                              preServiceBuilder.AppendLine(v.PreVisitServiceTarget(vbproject, _options));
-                                              serviceBuilder.AppendLine(v.VisitServiceTarget(vbproject, _options));
-                                              postServiceBuilder.AppendLine(v.PostVisitServiceTarget(vbproject, _options));
+                                              preServiceBuilder.AppendLine(v.PreVisitServiceTarget(currentVisualStudioProject, options));
+                                              serviceBuilder.AppendLine(v.VisitServiceTarget(currentVisualStudioProject, options));
+                                              postServiceBuilder.AppendLine(v.PostVisitServiceTarget(currentVisualStudioProject, options));
                                           }
                                       });                              
             }
@@ -128,10 +121,10 @@ namespace MsBuilderific
             var clean = Regex.Replace(cleanBuilder.ToString(), @"(?m)^[ \t]*\r?\n", string.Empty, RegexOptions.Multiline);
             var build = Regex.Replace(buildBuilder.ToString(), @"(?m)^[ \t]*\r?\n", string.Empty, RegexOptions.Multiline);
             var service = Regex.Replace(serviceBuilder.ToString(), @"(?m)^[ \t]*\r?\n", string.Empty, RegexOptions.Multiline);
-            var output = string.Format(Properties.Resources.msbuildtemplate, _options.CopyOutputTo, clean, build, service);
+            var output = string.Format(Properties.Resources.msbuildtemplate, options.CopyOutputTo, clean, build, service);
 
-            output = output.Replace("$OutputPath$", _options.OutputPath);
-            File.WriteAllText(_options.OutputFile, output);
+            output = output.Replace("$OutputPath$", options.OutputPath);
+            File.WriteAllText(options.OutputFile, output);
         }
 
         #endregion

@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace MsBuilderific.Tests
+namespace MsBuilderific.Core.Tests
 {
     [TestFixture]    
     public class TestOverall

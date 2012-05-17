@@ -68,6 +68,10 @@
       <Project>{55D77B74-793D-4BA6-A20C-621CCA91AABD}</Project>
       <Name>MsBuilderific.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MsBuilderific.Visitors\MsBuilderific.Visitors.csproj">
+      <Project>{A23A03A4-7499-4023-889C-130C501F3BA0}</Project>
+      <Name>MsBuilderific.Visitors</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

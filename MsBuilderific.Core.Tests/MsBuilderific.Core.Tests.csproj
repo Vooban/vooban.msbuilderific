@@ -8,8 +8,8 @@
     <ProjectGuid>{36393DE9-F1C7-413B-B6D7-46594C5B9B20}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MsBuilderific.Tests</RootNamespace>
-    <AssemblyName>MsBuilderific.Tests</AssemblyName>
+    <RootNamespace>MsBuilderific.Core.Tests</RootNamespace>
+    <AssemblyName>MsBuilderific.Core.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Xml.Linq;
 using MsBuilderific.Contracts;
 
-namespace MsBuilderific
+namespace MsBuilderific.Core
 {
     /// <summary>
     /// This class provides .csproj and .vbproj parsing capabilities

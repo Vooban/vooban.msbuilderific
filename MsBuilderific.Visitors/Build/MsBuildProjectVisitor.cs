@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Text;
 using MsBuilderific.Contracts;
+using MsBuilderific.Contracts.Extensions.Extensions;
 using MsBuilderific.Contracts.Visitors;
-using MsBuilderific.Extensions;
 
 namespace MsBuilderific.Visitors.Build
 {

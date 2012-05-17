@@ -1,6 +1,6 @@
 ﻿namespace MsBuilderific.Contracts.Visitors
 {
-    public abstract class BuildOrderVisitor
+    public abstract class BuildOrderVisitor : IBuildOrderVisitor
     {
         public virtual string PreVisitBuildTarget(VisualStudioProject project, IMsBuilderificOptions options)
         {

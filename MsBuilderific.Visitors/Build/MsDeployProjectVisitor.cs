@@ -3,8 +3,8 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using MsBuilderific.Contracts;
+using MsBuilderific.Contracts.Extensions.Extensions;
 using MsBuilderific.Contracts.Visitors;
-using MsBuilderific.Extensions;
 
 namespace MsBuilderific.Visitors.Build
 {
