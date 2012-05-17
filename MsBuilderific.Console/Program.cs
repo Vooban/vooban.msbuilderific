@@ -4,6 +4,7 @@ using MsBuilderific.Contracts;
 using MsBuilderific.Core;
 using MsBuilderific.Visitors.Build;
 using MsBuilderific.Visitors.Clean;
+using MsBuilderific.Core.VisualStudio;
 
 namespace MsBuilderific.Console
 {
@@ -16,7 +17,7 @@ namespace MsBuilderific.Console
             if (!CommandLineParser.Default.ParseArguments(args, options, System.Console.Out))
                 Environment.Exit(1);
 
-            IProjectDependencyFinder finder = new ProjectDependencyFinder(new ProjectLoader());
+            IProjectDependencyFinder finder = new ProjectDependencyFinder(new VisualStudio2010ProjectLoader());
 
             if (options.ExclusionPatterns != null)
             {
@@ -33,7 +34,7 @@ namespace MsBuilderific.Console
             generator.AcceptVisitor(new MsDeployProjectVisitor());
             generator.AcceptVisitor(new MsTestsProjectVisitor());
             generator.AcceptVisitor(new CopyProjectOutputVisitor());
-            generator.AcceptVisitor(new CopyRessourcesVisitor(new RessourceFinder()));
+            generator.AcceptVisitor(new CopyRessourcesVisitor(new VisualStudio2010RessourceFinder()));
             generator.AcceptVisitor(new CopyMsDeployPackagesVisitor());
             generator.AcceptVisitor(new DeleteBinAfterPackagingVisitor());
 

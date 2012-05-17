@@ -76,6 +76,10 @@
       <Project>{D587634F-B89A-42C6-ADF4-637AC3CA09E2}</Project>
       <Name>MsBuilderific.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MsBuilderific.Core.VisualStudio\MsBuilderific.Core.VisualStudio.csproj">
+      <Project>{8FEE0B62-A6B9-4887-ADFB-6D639DCE60A7}</Project>
+      <Name>MsBuilderific.Core.VisualStudio</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MsBuilderific.Core\MsBuilderific.Core.csproj">
       <Project>{55D77B74-793D-4BA6-A20C-621CCA91AABD}</Project>
       <Name>MsBuilderific.Core</Name>

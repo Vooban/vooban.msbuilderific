@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using MsBuilderific.Contracts;
 using MsBuilderific.Contracts.Visitors;
 
-namespace MsBuilderific.Core
+namespace MsBuilderific.Contracts
 {
     public interface IMsBuildFileCore
     {
@@ -16,7 +15,7 @@ namespace MsBuilderific.Core
         /// Removes a visitor from the generation process
         /// </summary>
         /// <param name="kickedVisitor">The visitor to remove from the generation process</param>
-        void KickOutVisitor(BuildOrderVisitor kickedVisitor);
+        void KickOutVisitor(IBuildOrderVisitor kickedVisitor);
 
         /// <summary>
         /// Generates a build script from the projects' dependency order

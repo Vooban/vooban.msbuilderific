@@ -4,12 +4,12 @@ using System.Linq;
 using System.Xml.Linq;
 using MsBuilderific.Contracts;
 
-namespace MsBuilderific.Core
+namespace MsBuilderific.Core.VisualStudio
 {
     /// <summary>
     /// This class provides .csproj and .vbproj parsing capabilities
     /// </summary>
-    public class RessourceFinder : IProjectRessourceFinder
+    public class VisualStudio2010RessourceFinder : IProjectRessourceFinder
     {
         #region Public methods
 

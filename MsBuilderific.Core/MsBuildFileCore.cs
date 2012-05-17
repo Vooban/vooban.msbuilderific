@@ -47,7 +47,7 @@ namespace MsBuilderific.Core
         /// Removes a visitor from the generation process
         /// </summary>
         /// <param name="kickedVisitor">The visitor to remove from the generation process</param>
-        public void KickOutVisitor(BuildOrderVisitor kickedVisitor)
+        public void KickOutVisitor(IBuildOrderVisitor kickedVisitor)
         {
             _visitors.Add(kickedVisitor);
         }
