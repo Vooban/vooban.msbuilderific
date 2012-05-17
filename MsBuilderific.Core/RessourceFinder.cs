@@ -36,7 +36,7 @@ namespace MsBuilderific.Core
                 var projectInfo = (from item in root.Elements("PropertyGroup")
                                    where !item.HasAttributes && item.Element("ProjectGuid") != null &&
                                    root.Elements("ItemGroup").Elements("Compile") != null &&
-                                   root.Elements("ItemGroup").Elements("Compile").Count() > 0 &&
+                                   root.Elements("ItemGroup").Elements("Compile").Any() &&
                                    item.Element("RootNamespace") != null && item.Element("AssemblyName") != null
                                    select new
                                    {
@@ -52,11 +52,11 @@ namespace MsBuilderific.Core
                                          where item.Element("LastGenOutput") != null
                                          select new{
                                                        LastGenOutput = item.Element("LastGenOutput").Value,
-                                                       AssemblyName = projectInfo.AssemblyName,
+                                                       projectInfo.AssemblyName,
                                                        ProjectPath = visualStudioProjectPath
                                                    });
 
-                        var ressources = ressourceInfo.Select((p) =>
+                        var ressources = ressourceInfo.Select(p =>
                                                                   {
                                                                       var split = p.LastGenOutput.Split('.');
 
@@ -94,7 +94,7 @@ namespace MsBuilderific.Core
                     if (e.Name.Namespace != XNamespace.None)
                         e.Name = XNamespace.None.GetName(e.Name.LocalName);
 
-                    if (e.Attributes().Where(a => a.IsNamespaceDeclaration || a.Name.Namespace != XNamespace.None).Any())
+                    if (e.Attributes().Any(a => a.IsNamespaceDeclaration || a.Name.Namespace != XNamespace.None))
                         e.ReplaceAttributes(e.Attributes().Select(a => a.IsNamespaceDeclaration ? null : a.Name.Namespace != XNamespace.None ? new XAttribute(XNamespace.None.GetName(a.Name.LocalName), a.Value) : a));
                 }
             }

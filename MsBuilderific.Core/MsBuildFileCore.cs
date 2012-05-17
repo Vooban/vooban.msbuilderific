@@ -12,7 +12,7 @@ namespace MsBuilderific.Core
     /// <summary>
     /// Class reponsible for generating the MsBuild file
     /// </summary>
-    public class MsBuildFileCore
+    public class MsBuildFileCore : IMsBuildFileCore
     {
         #region Private Members
 

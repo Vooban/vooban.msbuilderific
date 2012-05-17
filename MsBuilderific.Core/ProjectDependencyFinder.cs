@@ -8,17 +8,17 @@ using QuickGraph;
 using QuickGraph.Serialization;
 
 namespace MsBuilderific.Core
-{
+{    
     /// <summary>
     /// Finds the dependencies between the projects provided and generate the right build order
     /// </summary>
-    public class ProjectDependencyFinder
+    public class ProjectDependencyFinder : IProjectDependencyFinder
     {
         #region Private Members
 
         private readonly List<String> _excludedPatterns = new List<String>();
-   
-        private readonly ProjectLoader _projectLoader;
+
+        private readonly IVisualStudioProjectLoader _projectLoader;
 
         #endregion
 
@@ -27,7 +27,7 @@ namespace MsBuilderific.Core
         /// <summary>
         /// Initializes a new instance of the <see cref="ProjectDependencyFinder"/> class.
         /// </summary>
-        public ProjectDependencyFinder(ProjectLoader projectLoader)
+        public ProjectDependencyFinder(IVisualStudioProjectLoader projectLoader)
         {
             _projectLoader = projectLoader;
         }
@@ -77,7 +77,25 @@ namespace MsBuilderific.Core
             if (!string.IsNullOrEmpty(options.GraphFilename))
                 PersistGraph(graph, options.GraphFilename);
 
-            return GetDependencyOrder(graph);
+            return GetDependencyOrderFromGraph(graph);
+        }
+
+        /// <summary>
+        /// Process the graph to generate the correct project build order
+        /// </summary>
+        /// <param name="graph">
+        /// The graph that will be navigated to find the right project build order
+        /// </param>
+        /// <returns>
+        /// A list of projects in the correct build order
+        /// </returns>
+        public List<VisualStudioProject> GetDependencyOrderFromGraph(AdjacencyGraph<VisualStudioProject, Edge<VisualStudioProject>> graph)
+        {
+            var queue = new Queue<VisualStudioProject>();
+
+            ProcessGraph(graph, ref queue);
+
+            return queue.ToList();
         }
 
         /// <summary>
@@ -128,24 +146,6 @@ namespace MsBuilderific.Core
 
             return graph;
         }
-
-        /// <summary>
-        /// Process the graph to generate the correct project build order
-        /// </summary>
-        /// <param name="graph">
-        /// The graph that will be navigated to find the right project build order
-        /// </param>
-        /// <returns>
-        /// A list of projects in the correct build order
-        /// </returns>
-        public List<VisualStudioProject> GetDependencyOrder(AdjacencyGraph<VisualStudioProject, Edge<VisualStudioProject>> graph)
-        {
-            var queue = new Queue<VisualStudioProject>();
-
-            ProcessGraph(graph, ref queue);
-
-            return queue.ToList();
-        }
        
         /// <summary>
         /// Saves the graph in the GraphML format in the specified filename
@@ -180,7 +180,7 @@ namespace MsBuilderific.Core
         /// <returns>
         /// The number of projects that were removed from the graph
         /// </returns>
-        private static int ProcessGraph(AdjacencyGraph<VisualStudioProject, Edge<VisualStudioProject>> graph, ref Queue<VisualStudioProject> queue)
+        private static int ProcessGraph(IMutableVertexListGraph<VisualStudioProject, Edge<VisualStudioProject>> graph, ref Queue<VisualStudioProject> queue)
         {
             var removed = new List<VisualStudioProject>();
 

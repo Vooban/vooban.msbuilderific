@@ -1,5 +1,6 @@
 ﻿using System;
 using CommandLine;
+using MsBuilderific.Contracts;
 using MsBuilderific.Core;
 using MsBuilderific.Visitors.Build;
 using MsBuilderific.Visitors.Clean;
@@ -15,7 +16,7 @@ namespace MsBuilderific.Console
             if (!CommandLineParser.Default.ParseArguments(args, options, System.Console.Out))
                 Environment.Exit(1);
 
-            var finder = new ProjectDependencyFinder(new ProjectLoader());
+            IProjectDependencyFinder finder = new ProjectDependencyFinder(new ProjectLoader());
 
             if (options.ExclusionPatterns != null)
             {
@@ -25,7 +26,7 @@ namespace MsBuilderific.Console
 
             var buildOder = finder.GetDependencyOrder(options);
 
-            var generator = new MsBuildFileCore();
+            IMsBuildFileCore generator = new MsBuildFileCore();
 
             generator.AcceptVisitor(new CleanBuildArtefactsVisitor());
             generator.AcceptVisitor(new MsBuildProjectVisitor());

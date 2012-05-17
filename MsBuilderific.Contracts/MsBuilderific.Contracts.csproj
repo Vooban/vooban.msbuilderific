@@ -41,7 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IMsBuilderificOptions.cs" />
+    <Compile Include="IProjectDependencyFinder.cs" />
     <Compile Include="IProjectRessourceFinder.cs" />
+    <Compile Include="IVisualStudioProjectLoader.cs" />
     <Compile Include="ProjectOutputType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Visitors\BuildOrderVisitor.cs" />
