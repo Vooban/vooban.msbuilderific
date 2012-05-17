@@ -1,0 +1,76 @@
+﻿<!-- This build file was auto-generated using MsBuilderific (http://msbuilderific.codeplex.com/) by gimmemoore -->
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <UsingTask TaskName="TransformXml" AssemblyFile="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v10.0\Web\Microsoft.Web.Publishing.Tasks.dll"  />
+    <UsingTask TaskName="Sleep" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll" >
+        <ParameterGroup />
+        <Task>
+            <Code Type="Fragment" Language="cs">
+                System.Threading.Thread.Sleep(1000);
+            </Code>
+        </Task>
+    </UsingTask>
+    
+    <PropertyGroup Condition="!Exists('$(Configuration)')">
+        <Configuration>Debug</Configuration>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="!Exists('$(PlatformConfig)')">
+        <PlatformConfig>AnyCPU</PlatformConfig>
+    </PropertyGroup>
+
+    <PropertyGroup>         
+        <Action>Build</Action>
+        <ContinueOnError>False</ContinueOnError>
+        <OutputPath>$OutputPath$</OutputPath>
+        <DestinationFolder>{0}</DestinationFolder>
+        <TestBinFolder>bin</TestBinFolder>
+        <CopyEnabled>True</CopyEnabled>
+        <CopyXml>True</CopyXml>
+        <CopyPdb>True</CopyPdb>
+        <CopyExe>True</CopyExe>
+        <CopyConfig>True</CopyConfig>
+        <CopyDll>True</CopyDll>
+        <CopyCodeContracts>True</CopyCodeContracts>
+        <CopyRessources>True</CopyRessources>
+        <UnloadProjectsOnCompletion>True</UnloadProjectsOnCompletion>
+        <UseResultsCache>True</UseResultsCache>
+        <ExecuteTests>False</ExecuteTests>
+        <ContinueOnTestError>False</ContinueOnTestError>
+        <MsTestCategories>!Fonctionnel</MsTestCategories>
+        <MsTestGlobalSettingsFile>misa.testsettings</MsTestGlobalSettingsFile>
+        <MsTestLocation>%VS100COMNTOOLS%..\IDE\mstest.exe</MsTestLocation>
+        <MsDeployLocation>%ProgramFiles%\IIS\Microsoft Web Deploy\msdeploy.exe</MsDeployLocation>        
+        <MsDeployPackageTempDir>C:\Pkg</MsDeployPackageTempDir>
+        <GenerateMsDeployPackages>False</GenerateMsDeployPackages>
+        <BuildTestProjects>True</BuildTestProjects>        
+    </PropertyGroup>
+
+    <ItemGroup>        
+{1}
+    </ItemGroup>
+
+    <Target Name="Build" >
+        <Message Text="Starting the build process for configuration $(Configuration) in the following $(OutputPath)"/>
+{2}
+    </Target>
+        
+    <Target Name="Clean">
+        <Message Text="Cleaning built files"/>
+        <Delete Files="@(CleanedFiles)" ContinueOnError="true" />
+    </Target>
+
+    <Target Name="Rebuild" DependsOnTargets="Clean;Build" />
+
+    <Target Name="BuildServices" >
+        <Message Text="Starting to Build services"/>
+{3}
+    </Target>
+
+    <Target Name="CleanServices">
+        <Message Text="Cleaning services files"/>
+        <Delete Files="@(CleanedServicesFiles)" ContinueOnError="true" />
+    </Target>
+
+    <Target Name="RebuildServices" DependsOnTargets="CleanServices;BuildServices" />
+    
+</Project>
