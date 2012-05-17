@@ -61,9 +61,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MsBuilderific\MsBuilderific.csproj">
+    <ProjectReference Include="..\MsBuilderific.Core\MsBuilderific.Core.csproj">
       <Project>{55D77B74-793D-4BA6-A20C-621CCA91AABD}</Project>
-      <Name>MsBuilderific</Name>
+      <Name>MsBuilderific.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

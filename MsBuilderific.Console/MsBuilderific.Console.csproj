@@ -64,9 +64,9 @@
       <Project>{D587634F-B89A-42C6-ADF4-637AC3CA09E2}</Project>
       <Name>MsBuilderific.Contracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MsBuilderific\MsBuilderific.csproj">
+    <ProjectReference Include="..\MsBuilderific.Core\MsBuilderific.Core.csproj">
       <Project>{55D77B74-793D-4BA6-A20C-621CCA91AABD}</Project>
-      <Name>MsBuilderific</Name>
+      <Name>MsBuilderific.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
