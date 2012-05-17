@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace MsBuilderific.Contracts.Extensions.Extensions
+namespace MsBuilderific.Contracts.Extensions
 {
     /// <summary>
     /// Extension methods to standard the <see cref="VisualStudioProject"/> classes.

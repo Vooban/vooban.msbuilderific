@@ -62,7 +62,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MsBuilderific.Common\MsBuilderific.Contracts.Extensions.csproj">
+    <ProjectReference Include="..\MsBuilderific.Contracts.Extensions\MsBuilderific.Contracts.Extensions.csproj">
       <Project>{4015C3CE-BB18-4BCC-ADFB-BD44D41B67BE}</Project>
       <Name>MsBuilderific.Contracts.Extensions</Name>
     </ProjectReference>

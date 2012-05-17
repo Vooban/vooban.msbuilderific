@@ -17,8 +17,8 @@ namespace MsBuilderific.Core
         #region Private Members
 
         private readonly List<String> _excludedPatterns = new List<String>();
-        private readonly bool _supportVbproj;
-        private readonly bool _supportCsproj;
+   
+        private readonly ProjectLoader _projectLoader;
 
         #endregion
 
@@ -27,21 +27,9 @@ namespace MsBuilderific.Core
         /// <summary>
         /// Initializes a new instance of the <see cref="ProjectDependencyFinder"/> class.
         /// </summary>
-        public ProjectDependencyFinder()
+        public ProjectDependencyFinder(ProjectLoader projectLoader)
         {
-            _supportVbproj = false;
-            _supportCsproj = true;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProjectDependencyFinder"/> class.
-        /// </summary>
-        /// <param name="supportVbproj">if set to <c>true</c> the class will look for .vbproj while scanning the main folder.</param>
-        /// <param name="supportCsproj">if set to <c>true</c> the class will look for .csproj while scanning the main folder.</param>
-        public ProjectDependencyFinder(bool supportVbproj, bool supportCsproj)
-        {
-            _supportVbproj = supportVbproj;
-            _supportCsproj = supportCsproj;
+            _projectLoader = projectLoader;
         }
 
         #endregion
@@ -72,38 +60,22 @@ namespace MsBuilderific.Core
                 _excludedPatterns.Remove(pattern);
         }
 
-        /// <summary>
-        /// Build the dependency graph between the projects in the root folder and optionnaly save the graph in a GraphML file
-        /// </summary>
-        /// <param name="rootFolder">
-        /// The root folder to search for visual studio projects
-        /// </param>
-        /// <returns>
-        /// The list of <see cref="VisualStudioProject"/> in the correct build order
-        /// </returns>
-        public List<VisualStudioProject> GetDependencyOrder(string rootFolder)
-        {
-            return GetDependencyOrder(rootFolder , null);
-        }
 
         /// <summary>
         /// Build the dependency graph between the projects in the root folder and optionnaly save the graph in a GraphML file
         /// </summary>
-        /// <param name="rootFolder">
-        /// The root folder to search for visual studio projects
-        /// </param>
-        /// <param name="graphFilename">
-        /// The filename where the graph will be save, or nothing to disable graph persistence
+        /// <param name="options">
+        /// The options used to get the dependency order of the projects
         /// </param>
         /// <returns>
         /// The list of <see cref="VisualStudioProject"/> in the correct build order
         /// </returns>
-        public List<VisualStudioProject> GetDependencyOrder(string rootFolder, string graphFilename)
+        public List<VisualStudioProject> GetDependencyOrder(IMsBuilderificOptions options)
         {
-            var graph = GetDependencyGraph(rootFolder);
+            var graph = GetDependencyGraph(options);
 
-            if (!string.IsNullOrEmpty(graphFilename))
-                PersistGraph(graph, graphFilename);
+            if (!string.IsNullOrEmpty(options.GraphFilename))
+                PersistGraph(graph, options.GraphFilename);
 
             return GetDependencyOrder(graph);
         }
@@ -111,32 +83,32 @@ namespace MsBuilderific.Core
         /// <summary>
         /// Build the dependency graph from the projects found in the root folder - the exlusion patterns
         /// </summary>
-        /// <param name="rootFolder">
-        /// The folder to search
+        /// <param name="options">
+        /// The options used to get the dependency order of the projects
         /// </param>
         /// <returns>
         /// A graph representing the dependencies between the projects in the root folder
         /// </returns>
-        public AdjacencyGraph<VisualStudioProject, Edge<VisualStudioProject>> GetDependencyGraph(string rootFolder)
+        public AdjacencyGraph<VisualStudioProject, Edge<VisualStudioProject>> GetDependencyGraph(IMsBuilderificOptions options)
         {
-            if (!Directory.Exists(rootFolder))
-                throw new ArgumentException(string.Format("Le répertoire source est inexistant : {0}", rootFolder), "rootFolder");
+            if (!Directory.Exists(options.RootFolder))
+                throw new ArgumentException(string.Format("Le répertoire source est inexistant : {0}", options.RootFolder), "rootFolder");
 
             var graph = new AdjacencyGraph<VisualStudioProject, Edge<VisualStudioProject>>();
 
-            var projects = Directory.GetFiles(rootFolder, "*.*proj", SearchOption.AllDirectories);
-            if (_supportCsproj && _supportVbproj)
+            var projects = Directory.GetFiles(options.RootFolder, "*.*proj", SearchOption.AllDirectories);
+            if (options.CSharpSupport && options.VbNetSupport)
                 projects = projects.Where(s => s.EndsWith(".vbproj") || s.EndsWith(".csproj")).ToArray();
-            else if (_supportCsproj)
+            else if (options.CSharpSupport)
                 projects = projects.Where(s => s.EndsWith(".csproj")).ToArray();
-            else if (_supportVbproj)
+            else if (options.VbNetSupport)
                 projects = projects.Where(s => s.EndsWith(".vbproj")).ToArray();
             else 
                 projects = new string[]{};
 
             var projs = projects.Where(f => !_excludedPatterns.Any(f.Contains));
 
-            foreach (var resultat in projs.Select(csproj => new ProjectLoader(csproj)).Select(loader => loader.Parse()))
+            foreach (var resultat in projs.Select(csproj => _projectLoader.Parse(csproj)))
             {
                 if (resultat != null)
                     graph.AddVertex(resultat);
@@ -147,7 +119,7 @@ namespace MsBuilderific.Core
                 foreach (var dep in v.Dependencies)
                 {
                     var dependence = dep;
-                    var target = graph.Vertices.Where(x => x.AssemblyName == dependence).SingleOrDefault();
+                    var target = graph.Vertices.SingleOrDefault(x => x.AssemblyName == dependence);
 
                     if (target != null)
                         graph.AddVerticesAndEdge(new Edge<VisualStudioProject>(v, target));
@@ -212,7 +184,7 @@ namespace MsBuilderific.Core
         {
             var removed = new List<VisualStudioProject>();
 
-            foreach (var v in graph.Vertices.Where(v => graph.OutEdges(v).Count() == 0))
+            foreach (var v in graph.Vertices.Where(v => !graph.OutEdges(v).Any()))
             {
                 queue.Enqueue(v);
                 removed.Add(v);

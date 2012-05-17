@@ -11,28 +11,6 @@ namespace MsBuilderific.Core
     /// </summary>
     public class ProjectLoader
     {
-        #region Private Members
-
-        private readonly String _projectPath;
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Initialize a new instance of the class <see cref="ProjectLoader"/>.
-        /// </summary>
-        /// <param name="projectPath">Path to the .csproj or .vbproj</param>
-        public ProjectLoader(string projectPath)
-        {
-            if (!string.IsNullOrEmpty(projectPath) && !projectPath.Contains(".csproj") && !projectPath.Contains(".vbproj"))
-                throw new ArgumentException("The project path must be either a CSharp project or VBProject", "projectPath");
-
-            _projectPath = projectPath;
-        }
-
-        #endregion
-
         #region Public methods
 
         /// <summary>
@@ -41,9 +19,12 @@ namespace MsBuilderific.Core
         /// <returns>
         /// An instance of the class <see cref="VisualStudioProject"/> representing the project
         /// </returns>
-        public VisualStudioProject Parse()
+        public VisualStudioProject Parse(string visualStudioProjectPath)
         {
-            var xproject = GetProjectAsXDocument();
+            if (!string.IsNullOrEmpty(visualStudioProjectPath) && !visualStudioProjectPath.Contains(".csproj") && !visualStudioProjectPath.Contains(".vbproj"))
+                throw new ArgumentException("The project path must be either a CSharp project or VBProject", "visualStudioProjectPath");
+
+            var xproject = GetProjectAsXDocument(visualStudioProjectPath);
 
             if (xproject != null && xproject.Root != null)
             {
@@ -52,14 +33,14 @@ namespace MsBuilderific.Core
                 var projectInfo = (from item in root.Elements("PropertyGroup")
                                    where !item.HasAttributes && item.Element("ProjectGuid") != null && 
                                    root.Elements("ItemGroup").Elements("Compile") != null && 
-                                   root.Elements("ItemGroup").Elements("Compile").Count() > 0 &&
+                                   root.Elements("ItemGroup").Elements("Compile").Any() &&
                                    item.Element("RootNamespace") != null && item.Element("AssemblyName") != null && item.Element("OutputType") != null
                                    select new{
                                                  RootNamespace = item.Element("RootNamespace").Value,
                                                  AssemblyName = item.Element("AssemblyName").Value,
                                                  ProjectGuid = Guid.Parse(item.Element("ProjectGuid").Value),
                                                  OutputType = item.Element("OutputType").Value,
-                                                 Path = _projectPath
+                                                 Path = visualStudioProjectPath
                                              }).FirstOrDefault();
 
                 if (projectInfo != null)
@@ -87,9 +68,9 @@ namespace MsBuilderific.Core
         /// <returns>
         /// The <see cref="XDocument"/> object
         /// </returns>
-        private XDocument GetProjectAsXDocument()
+        private XDocument GetProjectAsXDocument(string visualStudioProjectPath)
         {
-            var xproject = XDocument.Load(_projectPath);
+            var xproject = XDocument.Load(visualStudioProjectPath);
 
             if (xproject.Root != null)
             {
@@ -98,7 +79,7 @@ namespace MsBuilderific.Core
                     if (e.Name.Namespace != XNamespace.None)
                         e.Name = XNamespace.None.GetName(e.Name.LocalName);
 
-                    if (e.Attributes().Where(a => a.IsNamespaceDeclaration || a.Name.Namespace != XNamespace.None).Any())
+                    if (e.Attributes().Any(a => a.IsNamespaceDeclaration || a.Name.Namespace != XNamespace.None))
                         e.ReplaceAttributes(e.Attributes().Select(a => a.IsNamespaceDeclaration ? null : a.Name.Namespace != XNamespace.None ? new XAttribute(XNamespace.None.GetName(a.Name.LocalName), a.Value) : a));
                 }
             }

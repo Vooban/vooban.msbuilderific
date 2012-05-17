@@ -15,7 +15,7 @@ namespace MsBuilderific.Console
             if (!CommandLineParser.Default.ParseArguments(args, options, System.Console.Out))
                 Environment.Exit(1);
 
-            var finder = new ProjectDependencyFinder(options.VbNetSupport, options.CSharpSupport);
+            var finder = new ProjectDependencyFinder(new ProjectLoader());
 
             if (options.ExclusionPatterns != null)
             {
@@ -23,7 +23,7 @@ namespace MsBuilderific.Console
                     finder.AddExclusionPattern(exclusion);
             }
 
-            var buildOder = finder.GetDependencyOrder(options.RootFolder, options.GraphFilename);
+            var buildOder = finder.GetDependencyOrder(options);
 
             var generator = new MsBuildFileCore();
 
