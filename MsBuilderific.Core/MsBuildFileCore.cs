@@ -26,6 +26,15 @@ namespace MsBuilderific.Core
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MsBuildFileCore"/> class.
+        /// </summary>
+        /// <param name="visitors">The visitors.</param>
+        public MsBuildFileCore(IEnumerable<IBuildOrderVisitor> visitors)
+        {
+            _visitors = visitors.ToList();
+        }
+
         #endregion
 
         #region "Visitor pattern"
@@ -68,13 +77,13 @@ namespace MsBuilderific.Core
             if (dependencyOrder == null)
                 return;
 
-            var cleanBuilder = new StringBuilder();
-            var buildBuilder = new StringBuilder();
-            var preBuildBuilder = new StringBuilder();
-            var postBuildBuilder = new StringBuilder();            
-            var serviceBuilder = new StringBuilder();
-            var preServiceBuilder = new StringBuilder();
-            var postServiceBuilder = new StringBuilder();
+            var cleanStringBuilder = new StringBuilder();
+            var buildStringBuilder = new StringBuilder();
+            var preBuildStringBuilder = new StringBuilder();
+            var postBuildStringBuilder = new StringBuilder();            
+            var serviceStringBuilder = new StringBuilder();
+            var preServiceStringBuilder = new StringBuilder();
+            var postServiceStringBuilder = new StringBuilder();
 
             foreach (var vsnetProject in dependencyOrder)
             {
@@ -89,38 +98,40 @@ namespace MsBuilderific.Core
                                           if (v == null || !v.ShallExecute(options))
                                               return;
 
-                                          cleanBuilder.AppendLine(v.PreVisitCleanTarget(currentVisualStudioProject, options));
-                                          cleanBuilder.AppendLine(v.VisitCleanTarget(currentVisualStudioProject, options));
-                                          cleanBuilder.AppendLine(v.PostVisitCleanTarget(currentVisualStudioProject, options));
+                                          cleanStringBuilder.AppendLine(v.PreVisitCleanTarget(currentVisualStudioProject, options));
+                                          cleanStringBuilder.AppendLine(v.VisitCleanTarget(currentVisualStudioProject, options));
+                                          cleanStringBuilder.AppendLine(v.PostVisitCleanTarget(currentVisualStudioProject, options));
 
-                                          preBuildBuilder.AppendLine(v.PreVisitBuildTarget(currentVisualStudioProject, options));
+                                          preBuildStringBuilder.AppendLine(v.PreVisitBuildTarget(currentVisualStudioProject, options));
                                           if (currentVisualStudioProject.IsWebProject)
-                                              buildBuilder.AppendLine(v.VisitBuildWebProjectTarget(currentVisualStudioProject, options));
+                                              buildStringBuilder.AppendLine(v.VisitBuildWebProjectTarget(currentVisualStudioProject, options));
                                           else if (currentVisualStudioProject.OutputType != ProjectOutputType.Library.ToString())
-                                              buildBuilder.AppendLine(v.VisitBuildExeProjectTarget(currentVisualStudioProject, options));
+                                              buildStringBuilder.AppendLine(v.VisitBuildExeProjectTarget(currentVisualStudioProject, options));
                                           else
-                                              buildBuilder.AppendLine(v.VisitBuildLibraryProjectTarget(currentVisualStudioProject, options));
-                                          buildBuilder.AppendLine(v.VisitBuildAllTypeTarget(currentVisualStudioProject, options));
-                                          postBuildBuilder.AppendLine(v.PostVisitBuildTarget(currentVisualStudioProject, options));
+                                              buildStringBuilder.AppendLine(v.VisitBuildLibraryProjectTarget(currentVisualStudioProject, options));
+                                          
+                                          buildStringBuilder.AppendLine(v.VisitBuildAllTypeTarget(currentVisualStudioProject, options));
+                                          
+                                          postBuildStringBuilder.AppendLine(v.PostVisitBuildTarget(currentVisualStudioProject, options));
 
-                                          if (options.ServiceSpecificTarget && currentVisualStudioProject.IsWebProject)
+                                          if (options.GenerateSpecificTargetForWebProject && currentVisualStudioProject.IsWebProject)
                                           {
-                                              preServiceBuilder.AppendLine(v.PreVisitServiceTarget(currentVisualStudioProject, options));
-                                              serviceBuilder.AppendLine(v.VisitServiceTarget(currentVisualStudioProject, options));
-                                              postServiceBuilder.AppendLine(v.PostVisitServiceTarget(currentVisualStudioProject, options));
+                                              preServiceStringBuilder.AppendLine(v.PreVisitServiceTarget(currentVisualStudioProject, options));
+                                              serviceStringBuilder.AppendLine(v.VisitServiceTarget(currentVisualStudioProject, options));
+                                              postServiceStringBuilder.AppendLine(v.PostVisitServiceTarget(currentVisualStudioProject, options));
                                           }
                                       });                              
             }
 
-            buildBuilder.Insert(0, preBuildBuilder.ToString());
-            buildBuilder.Append(postBuildBuilder.ToString());
+            buildStringBuilder.Insert(0, preBuildStringBuilder.ToString());
+            buildStringBuilder.Append(postBuildStringBuilder.ToString());
 
-            serviceBuilder.Insert(0, preServiceBuilder.ToString());
-            serviceBuilder.Append(postServiceBuilder.ToString());
+            serviceStringBuilder.Insert(0, preServiceStringBuilder.ToString());
+            serviceStringBuilder.Append(postServiceStringBuilder.ToString());
             
-            var clean = Regex.Replace(cleanBuilder.ToString(), @"(?m)^[ \t]*\r?\n", string.Empty, RegexOptions.Multiline);
-            var build = Regex.Replace(buildBuilder.ToString(), @"(?m)^[ \t]*\r?\n", string.Empty, RegexOptions.Multiline);
-            var service = Regex.Replace(serviceBuilder.ToString(), @"(?m)^[ \t]*\r?\n", string.Empty, RegexOptions.Multiline);
+            var clean = Regex.Replace(cleanStringBuilder.ToString(), @"(?m)^[ \t]*\r?\n", string.Empty, RegexOptions.Multiline);
+            var build = Regex.Replace(buildStringBuilder.ToString(), @"(?m)^[ \t]*\r?\n", string.Empty, RegexOptions.Multiline);
+            var service = Regex.Replace(serviceStringBuilder.ToString(), @"(?m)^[ \t]*\r?\n", string.Empty, RegexOptions.Multiline);
             var output = string.Format(Properties.Resources.msbuildtemplate, options.CopyOutputTo, clean, build, service);
 
             output = output.Replace("$OutputPath$", options.OutputPath);

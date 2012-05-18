@@ -4,8 +4,6 @@ using MsBuilderific.Common;
 using MsBuilderific.Contracts;
 using MsBuilderific.Core;
 using MsBuilderific.Core.VisualStudio.V2010;
-using MsBuilderific.Visitors.Build;
-using MsBuilderific.Visitors.Clean;
 using Microsoft.Practices.Unity;
 
 namespace MsBuilderific.Console
@@ -22,7 +20,6 @@ namespace MsBuilderific.Console
             ConfigureContainer();
 
             var finder = Injection.Engine.Resolve<IProjectDependencyFinder>();
-            //IProjectDependencyFinder finder = new ProjectDependencyFinder(new VisualStudio2010ProjectLoader());
 
             if (options.ExclusionPatterns != null)
             {
@@ -31,17 +28,7 @@ namespace MsBuilderific.Console
             }
 
             var buildOder = finder.GetDependencyOrder(options);
-
-            IMsBuildFileCore generator = new MsBuildFileCore();
-
-            generator.AcceptVisitor(new CleanBuildArtefactsVisitor());
-            generator.AcceptVisitor(new MsBuildProjectVisitor());
-            generator.AcceptVisitor(new MsDeployProjectVisitor());
-            generator.AcceptVisitor(new MsTestsProjectVisitor());
-            generator.AcceptVisitor(new CopyProjectOutputVisitor());
-            generator.AcceptVisitor(new CopyRessourcesVisitor(new VisualStudio2010RessourceFinder()));
-            generator.AcceptVisitor(new CopyMsDeployPackagesVisitor());
-            generator.AcceptVisitor(new DeleteBinAfterPackagingVisitor());
+            var generator = Injection.Engine.Resolve<IMsBuildFileCore>();
 
             generator.WriteBuildScript(buildOder, options);
         }

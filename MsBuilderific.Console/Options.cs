@@ -65,7 +65,7 @@ namespace MsBuilderific.Console
         /// Gets or sets a value indicating if we generate specific build/rebuild/clean targets for web projects
         /// </summary>
         [Option("s", "servicespecifictarget", HelpText = "True to generate specific build target for web projects", Required = false)]
-        public bool ServiceSpecificTarget { get; set; }
+        public bool GenerateSpecificTargetForWebProject { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating if all the projects are builds in the same folder 

@@ -53,7 +53,7 @@ namespace MsBuilderific.Contracts
         /// <summary>
         /// Gets or sets a value indicating if we generate specific build/rebuild/clean targets for web projects
         /// </summary>
-        bool ServiceSpecificTarget { get;  }
+        bool GenerateSpecificTargetForWebProject { get;  }
 
         /// <summary>
         /// Gets or sets a value indicating if MsBuilderific should look for .csproj

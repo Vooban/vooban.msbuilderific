@@ -1,6 +1,7 @@
 ﻿using Microsoft.Practices.Unity;
 using MsBuilderific.Common;
 using MsBuilderific.Contracts;
+using MsBuilderific.Contracts.Visitors;
 
 namespace MsBuilderific.Core
 {
@@ -19,9 +20,10 @@ namespace MsBuilderific.Core
         /// </remarks>
         protected override void Initialize()
         {
-            Container.RegisterType<IMsBuildFileCore, MsBuildFileCore>();
+            var injectedBuilders = new InjectionConstructor(Injection.Engine.ResolveAll<IBuildOrderVisitor>());
+            Injection.Engine.RegisterType<IMsBuildFileCore, MsBuildFileCore>(injectedBuilders);
 
-            var injectedBuilders = new InjectionConstructor(Injection.Engine.ResolveAll<IVisualStudioProjectLoader>());
+            injectedBuilders = new InjectionConstructor(Injection.Engine.ResolveAll<IVisualStudioProjectLoader>());
             Injection.Engine.RegisterType<IProjectDependencyFinder, ProjectDependencyFinder>(injectedBuilders);
         }
     }
