@@ -14,8 +14,11 @@ namespace MsBuilderific.Console
         {            
             var options = new Options();
 
-            if (!CommandLineParser.Default.ParseArguments(args, options, System.Console.Out))
-                Environment.Exit(1);
+            if (args != null && args.Length>0)
+            {
+                if (!CommandLineParser.Default.ParseArguments(args, options, System.Console.Out))
+                    Environment.Exit(1);
+            }
 
             ConfigureContainer();
 
