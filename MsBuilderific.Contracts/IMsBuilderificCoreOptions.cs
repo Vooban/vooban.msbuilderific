@@ -11,11 +11,6 @@ namespace MsBuilderific.Contracts
         String OutputPath { get;  }
 
         /// <summary>
-        /// Gets or sets the list of configuration that will be used to perform web.config transformations when building in release mode
-        /// </summary>
-        List<String> Transforms { get; }
-
-        /// <summary>
         /// Gets or sets the list of file/folder exclusions that will be excluded from the dependency detection and build file generation process
         /// </summary>
         List<String> ExclusionPatterns { get;  }
@@ -46,11 +41,6 @@ namespace MsBuilderific.Contracts
         String CopyOutputTo { get;  }
 
         /// <summary>
-        /// Gets or sets a value indicating if we generate msbuild packages 
-        /// </summary>
-        bool GeneratePackagesOnBuild { get;  }
-
-        /// <summary>
         /// Gets or sets a value indicating if we generate specific build/rebuild/clean targets for web projects
         /// </summary>
         bool GenerateSpecificTargetForWebProject { get;  }
@@ -64,20 +54,5 @@ namespace MsBuilderific.Contracts
         /// Gets or sets a value indicating if MsBuilderific should look for .vbproj
         /// </summary>
         bool VbNetSupport { get;}
-
-        /// <summary>
-        /// Gets or sets a value indicating if copy pdb to the output location
-        /// </summary>
-        bool CopyPdbs { get;}
-
-        /// <summary>
-        /// Gets or sets a value indicating if we add MsTest task in the resulting msbuild file
-        /// </summary>
-        bool GenerateMsTestTask { get; }
-
-        /// <summary>
-        /// Gets or sets the regex used to discover mstests assemblies
-        /// </summary>
-        String TestDiscoveryPattern { get; }
     }
 }

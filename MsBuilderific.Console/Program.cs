@@ -11,16 +11,16 @@ namespace MsBuilderific.Console
     class Program
     {
         static void Main(string[] args)
-        {            
-            var options = new MsBuilderificCoreOptions();
+        {
+            ConfigureContainer();
+
+            var options = Injection.Engine.Resolve<IMsBuilderificCoreOptions>(); 
 
             if (args != null && args.Length>0)
             {
                 if (!CommandLineParser.Default.ParseArguments(args, options, System.Console.Out))
                     Environment.Exit(1);
             }
-
-            ConfigureContainer();
 
             var finder = Injection.Engine.Resolve<IProjectDependencyFinder>();
 

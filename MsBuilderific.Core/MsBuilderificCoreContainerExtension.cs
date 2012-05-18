@@ -20,6 +20,8 @@ namespace MsBuilderific.Core
         /// </remarks>
         protected override void Initialize()
         {
+            Injection.Engine.RegisterType<IMsBuilderificCoreOptions, MsBuilderificCoreOptions>();
+
             var injectedBuilders = new InjectionConstructor(Injection.Engine.ResolveAll<IBuildOrderVisitor>());
             Injection.Engine.RegisterType<IMsBuildFileCore, MsBuildFileCore>(injectedBuilders);
 

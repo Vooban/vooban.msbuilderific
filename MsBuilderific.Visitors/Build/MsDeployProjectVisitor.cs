@@ -10,9 +10,16 @@ namespace MsBuilderific.Visitors.Build
 {
     public class MsDeployProjectVisitor : BuildOrderVisitor
     {
+        private readonly VisitorsOptions _options;
+
+        public MsDeployProjectVisitor(VisitorsOptions options)
+        {
+            _options=options;
+        }
+
         public override bool ShallExecute(IMsBuilderificCoreOptions coreOptions)
         {
-            return coreOptions.GeneratePackagesOnBuild;
+            return _options.GeneratePackagesOnBuild;
         }
 
         public override string VisitBuildExeProjectTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions)
@@ -34,9 +41,9 @@ namespace MsBuilderific.Visitors.Build
             var packageCommand = new StringBuilder();
             var folder = project.GetRelativeFolderPath(coreOptions);
 
-            if (coreOptions.Transforms != null && coreOptions.Transforms.Count > 0)
+            if (_options.Transforms != null && _options.Transforms.Count > 0)
             {
-                coreOptions.Transforms.ForEach(t =>
+                _options.Transforms.ForEach(t =>
                                                {
                                                    packageCommand.AppendLine(string.Format("		<Delete Files=\"$(MSBuildProjectDirectory)\\{0}\\web.temp.{1}.config\" Condition=\"$(GenerateMsDeployPackages) AND Exists('{0}\\web.temp.{1}.config')\" />", folder, t));
                                                    packageCommand.AppendLine(string.Format("		<Copy SourceFiles=\"$(MSBuildProjectDirectory)\\{0}\\web.config\" DestinationFiles=\"$(MSBuildProjectDirectory)\\{0}\\web.temp.{1}.config\" Condition=\"$(GenerateMsDeployPackages) AND Exists('{0}\\web.{1}.config')\" />", folder, t));

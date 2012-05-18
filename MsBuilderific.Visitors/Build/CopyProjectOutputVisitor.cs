@@ -9,6 +9,13 @@ namespace MsBuilderific.Visitors.Build
 {
     public class CopyProjectOutputVisitor : BuildOrderVisitor
     {
+        private readonly VisitorsOptions _options;
+
+        public CopyProjectOutputVisitor(VisitorsOptions options)
+        {
+            _options=options;
+        }
+
         public override bool ShallExecute(IMsBuilderificCoreOptions coreOptions)
         {
             return coreOptions == null || !string.IsNullOrEmpty(coreOptions.CopyOutputTo);
@@ -29,7 +36,7 @@ namespace MsBuilderific.Visitors.Build
             else
                 extensions.Add("dll");
 
-            if (coreOptions.CopyPdbs)
+            if (_options.CopyPdbs)
                 extensions.Add("pdb");
 
             foreach (var ext in extensions)

@@ -7,9 +7,16 @@ namespace MsBuilderific.Visitors.Build
 {
     public class CopyMsDeployPackagesVisitor : BuildOrderVisitor
     {
+        private readonly VisitorsOptions _options;
+
+        public CopyMsDeployPackagesVisitor(VisitorsOptions options)
+        {
+            _options=options;
+        }
+
         public override bool ShallExecute(IMsBuilderificCoreOptions coreOptions)
         {
-            return coreOptions == null || coreOptions.GeneratePackagesOnBuild;
+            return coreOptions == null || _options.GeneratePackagesOnBuild;
         }
 
         public override string VisitServiceTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions)
@@ -21,7 +28,7 @@ namespace MsBuilderific.Visitors.Build
         {
             var buildBuilder = new StringBuilder();
 
-            coreOptions.Transforms.ForEach(t => buildBuilder.AppendLine(AddCopyPackagesInformation(project, coreOptions, false, t)));
+            _options.Transforms.ForEach(t => buildBuilder.AppendLine(AddCopyPackagesInformation(project, coreOptions, false, t)));
             
             buildBuilder.AppendLine(AddCopyPackagesInformation(project, coreOptions, false));
 

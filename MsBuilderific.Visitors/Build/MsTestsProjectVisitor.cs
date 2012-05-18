@@ -7,6 +7,13 @@ namespace MsBuilderific.Visitors.Build
 {
     public class MsTestsProjectVisitor : BuildOrderVisitor
     {
+        private readonly VisitorsOptions _options;
+
+        public MsTestsProjectVisitor(VisitorsOptions options)
+        {
+            _options=options;
+        }
+
         public override string VisitBuildExeProjectTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions)
         {
             // Same logic for exe and library projects, defaults to same implementation
@@ -14,8 +21,8 @@ namespace MsBuilderific.Visitors.Build
         }
 
         public override string VisitBuildLibraryProjectTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions)
-        {            
-            if (Regex.IsMatch(project.AssemblyName, coreOptions.TestDiscoveryPattern))
+        {
+            if (Regex.IsMatch(project.AssemblyName, _options.TestDiscoveryPattern))
             {
                 return string.Format("		<Exec Command='\"$(MsTestLocation)\" /testcontainer:{0}\\$(TestBinFolder)\\{1}.dll /runconfig:$(MsTestGlobalSettingsFile) /category:\"$(MsTestCategories)\" /usestderr /detail:errormessage /detail:errorstacktrace' ContinueOnError=\"$(ContinueOnTestError)\" Condition=\"$(ExecuteTests)\" />", project.GetRelativeFolderPath(coreOptions), project.AssemblyName);                
             }
@@ -25,7 +32,7 @@ namespace MsBuilderific.Visitors.Build
 
         public override bool ShallExecute(IMsBuilderificCoreOptions coreOptions)
         {
-            return coreOptions.GenerateMsTestTask && !string.IsNullOrEmpty(coreOptions.TestDiscoveryPattern);
+            return _options.GenerateMsTestTask && !string.IsNullOrEmpty(_options.TestDiscoveryPattern);
         }
     }
 }
