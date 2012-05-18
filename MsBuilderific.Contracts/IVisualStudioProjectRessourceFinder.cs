@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MsBuilderific.Contracts
 {
-    public interface IProjectRessourceFinder
+    public interface IVisualStudioProjectRessourceFinder
     {
         /// <summary>
         /// Parses the visual studio project and return the resulting

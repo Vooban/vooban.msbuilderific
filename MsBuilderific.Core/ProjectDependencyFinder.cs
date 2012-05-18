@@ -18,7 +18,7 @@ namespace MsBuilderific.Core
 
         private readonly List<String> _excludedPatterns = new List<String>();
 
-        private readonly IVisualStudioProjectLoader _projectLoader;
+        private readonly IEnumerable<IVisualStudioProjectLoader> _projectLoader;
 
         #endregion
 
@@ -27,9 +27,9 @@ namespace MsBuilderific.Core
         /// <summary>
         /// Initializes a new instance of the <see cref="ProjectDependencyFinder"/> class.
         /// </summary>
-        public ProjectDependencyFinder(IVisualStudioProjectLoader projectLoader)
+        public ProjectDependencyFinder(IEnumerable<IVisualStudioProjectLoader> projectLoaders)
         {
-            _projectLoader = projectLoader;
+            _projectLoader = projectLoaders.ToList();
         }
 
         #endregion
@@ -126,10 +126,19 @@ namespace MsBuilderific.Core
 
             var projs = projects.Where(f => !_excludedPatterns.Any(f.Contains));
 
-            foreach (var resultat in projs.Select(csproj => _projectLoader.Parse(csproj)))
-            {
-                if (resultat != null)
-                    graph.AddVertex(resultat);
+            foreach (var projectFile in projs)
+            { 
+                var currentProjectFile = projectFile;
+
+                // Get all instances from supported project parser, and retrieve the only one that can work
+                var projectInstance = _projectLoader.Select(pl =>
+                {
+                    VisualStudioProject result;
+                    pl.TryParse(currentProjectFile, out result);
+                    return result;
+                }).SingleOrDefault(s => s != null);
+
+                graph.AddVertex(projectInstance);
             }
 
             foreach (var v in graph.Vertices)

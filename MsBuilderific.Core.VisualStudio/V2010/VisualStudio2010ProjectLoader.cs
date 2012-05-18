@@ -4,7 +4,7 @@ using System.Linq;
 using System.Xml.Linq;
 using MsBuilderific.Contracts;
 
-namespace MsBuilderific.Core.VisualStudio
+namespace MsBuilderific.Core.VisualStudio.V2010
 {
     /// <summary>
     /// This class provides .csproj and .vbproj parsing capabilities
@@ -56,6 +56,52 @@ namespace MsBuilderific.Core.VisualStudio
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Gets the Visual Studio Version support provider by this project loader
+        /// </summary>
+        public string Version
+        {
+            get { return "2010"; }
+        }
+
+        /// <summary>
+        /// Parses the visual studio project and return the resulting
+        /// </summary>
+        /// <param name="visualStudioProjectPath">Path to the Visual Studio Project to parse</param>
+        /// <returns>
+        /// <c>true</c> if the parser was able to load this Visual Studio Project, <c>false</c> otherwise
+        /// </returns>
+        public bool CanParse(string visualStudioProjectPath)
+        {
+            VisualStudioProject project;
+
+            return TryParse(visualStudioProjectPath, out project);
+        }
+
+        /// <summary>
+        /// Parses the visual studio project and return the resulting
+        /// </summary>
+        /// <param name="visualStudioProjectPath">Path to the Visual Studio Project to parse</param>
+        /// <param name="result">The parsed project if supported, null otherwise</param>
+        /// <returns>
+        /// <c>true</c> if the parser was able to load this Visual Studio Project, <c>false</c> otherwise
+        /// </returns>
+        public bool TryParse(string visualStudioProjectPath, out VisualStudioProject result)
+        {
+            try
+            {
+                result = Parse(visualStudioProjectPath);
+                return true;
+            }
+            catch
+            {
+                // Ingore the error and return false
+                result = null;
+            }
+
+            return false;
         }
 
         #endregion

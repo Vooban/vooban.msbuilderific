@@ -55,7 +55,7 @@
     <Compile Include="IMsBuilderificOptions.cs" />
     <Compile Include="IMsBuildFileCore.cs" />
     <Compile Include="IProjectDependencyFinder.cs" />
-    <Compile Include="IProjectRessourceFinder.cs" />
+    <Compile Include="IVisualStudioProjectRessourceFinder.cs" />
     <Compile Include="IVisualStudioProjectLoader.cs" />
     <Compile Include="ProjectOutputType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

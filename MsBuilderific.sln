@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsBuilderific.Contracts.Ext
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsBuilderific.Core.VisualStudio", "MsBuilderific.Core.VisualStudio\MsBuilderific.Core.VisualStudio.csproj", "{8FEE0B62-A6B9-4887-ADFB-6D639DCE60A7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsBuilderific.Common", "MsBuilderific.Common\MsBuilderific.Common.csproj", "{C8DC781A-23B1-4F6D-88A9-18D54839FA17}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +103,16 @@ Global
 		{8FEE0B62-A6B9-4887-ADFB-6D639DCE60A7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{8FEE0B62-A6B9-4887-ADFB-6D639DCE60A7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{8FEE0B62-A6B9-4887-ADFB-6D639DCE60A7}.Release|x86.ActiveCfg = Release|Any CPU
+		{C8DC781A-23B1-4F6D-88A9-18D54839FA17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8DC781A-23B1-4F6D-88A9-18D54839FA17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8DC781A-23B1-4F6D-88A9-18D54839FA17}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C8DC781A-23B1-4F6D-88A9-18D54839FA17}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C8DC781A-23B1-4F6D-88A9-18D54839FA17}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C8DC781A-23B1-4F6D-88A9-18D54839FA17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8DC781A-23B1-4F6D-88A9-18D54839FA17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8DC781A-23B1-4F6D-88A9-18D54839FA17}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C8DC781A-23B1-4F6D-88A9-18D54839FA17}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C8DC781A-23B1-4F6D-88A9-18D54839FA17}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

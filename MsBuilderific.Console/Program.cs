@@ -1,10 +1,12 @@
 ﻿using System;
 using CommandLine;
+using MsBuilderific.Common;
 using MsBuilderific.Contracts;
 using MsBuilderific.Core;
+using MsBuilderific.Core.VisualStudio.V2010;
 using MsBuilderific.Visitors.Build;
 using MsBuilderific.Visitors.Clean;
-using MsBuilderific.Core.VisualStudio;
+using Microsoft.Practices.Unity;
 
 namespace MsBuilderific.Console
 {
@@ -17,7 +19,10 @@ namespace MsBuilderific.Console
             if (!CommandLineParser.Default.ParseArguments(args, options, System.Console.Out))
                 Environment.Exit(1);
 
-            IProjectDependencyFinder finder = new ProjectDependencyFinder(new VisualStudio2010ProjectLoader());
+            ConfigureContainer();
+
+            var finder = Injection.Engine.Resolve<IProjectDependencyFinder>();
+            //IProjectDependencyFinder finder = new ProjectDependencyFinder(new VisualStudio2010ProjectLoader());
 
             if (options.ExclusionPatterns != null)
             {
@@ -39,6 +44,12 @@ namespace MsBuilderific.Console
             generator.AcceptVisitor(new DeleteBinAfterPackagingVisitor());
 
             generator.WriteBuildScript(buildOder, options);
+        }
+
+        private static void ConfigureContainer()
+        {
+            Injection.Engine.AddNewExtension<MsBuilderificCoreContainerExtension>();
+            Injection.Engine.AddNewExtension<VisualStudio2010ContainerExtension>();
         }
     }
 }

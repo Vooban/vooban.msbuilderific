@@ -7,9 +7,9 @@ namespace MsBuilderific.Visitors.Build
 {
     public class CopyRessourcesVisitor : BuildOrderVisitor
     {
-        private readonly IProjectRessourceFinder _ressourceFinder;
+        private readonly IVisualStudioProjectRessourceFinder _ressourceFinder;
 
-        public CopyRessourcesVisitor(IProjectRessourceFinder ressourceFinder)
+        public CopyRessourcesVisitor(IVisualStudioProjectRessourceFinder ressourceFinder)
         {
             _ressourceFinder = ressourceFinder;
         }
