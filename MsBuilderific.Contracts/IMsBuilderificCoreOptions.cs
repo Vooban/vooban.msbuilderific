@@ -8,12 +8,12 @@ namespace MsBuilderific.Contracts
         /// <summary>
         /// Gets or sets the build output path
         /// </summary>
-        String OutputPath { get;  }
+        String MsBuildFileOuputPath { get;  }
 
         /// <summary>
         /// Gets or sets the list of file/folder exclusions that will be excluded from the dependency detection and build file generation process
         /// </summary>
-        List<String> ExclusionPatterns { get;  }
+        List<String> ProjectDetectionExclusionPatterns { get;  }
 
         /// <summary>
         /// Gets or sets the root folder from which the tool will scan for projects
@@ -33,7 +33,7 @@ namespace MsBuilderific.Contracts
         /// <summary>
         /// Gets or sets the build output file
         /// </summary>
-        String OutputFile { get;  }
+        String MsBuildOutputFilename { get;  }
 
         /// <summary>
         /// Gets or sets the directory where projects output (.dll, .exe, .config, .pdb, .xml) will be copied, or nothing to ingnore this

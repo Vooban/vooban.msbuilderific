@@ -17,13 +17,13 @@ namespace MsBuilderific.Core
         /// Gets or sets the build output path
         /// </summary>
         [Option("op", "outputPath", HelpText = "The project's build output path", Required = false)]
-        public String OutputPath { get; set; }
+        public String MsBuildFileOuputPath { get; set; }
 
         /// <summary>
         /// Gets or sets the list of file/folder exclusions that will be excluded from the dependency detection and build file generation process
         /// </summary>
         [OptionList("e", "exclusions", HelpText = "The list of excluded patterns, separated by ;", Required = false, Separator = ';')]
-        public List<string> ExclusionPatterns { get; set; }
+        public List<string> ProjectDetectionExclusionPatterns { get; set; }
 
         /// <summary>
         /// Gets or sets the root folder from which the tool will scan for projects
@@ -47,7 +47,7 @@ namespace MsBuilderific.Core
         /// Gets or sets the build output file
         /// </summary>
         [Option("o", "outputfile", HelpText = "The build script output file", Required = true)]
-        public string OutputFile { get; set; }
+        public string MsBuildOutputFilename { get; set; }
 
         /// <summary>
         /// Gets or sets the directory where projects output (.dll, .exe, .config, .pdb, .xml) will be copied, or nothing to ingnore this

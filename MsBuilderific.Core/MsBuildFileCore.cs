@@ -134,8 +134,8 @@ namespace MsBuilderific.Core
             var service = Regex.Replace(serviceStringBuilder.ToString(), @"(?m)^[ \t]*\r?\n", string.Empty, RegexOptions.Multiline);
             var output = string.Format(Properties.Resources.msbuildtemplate, coreOptions.CopyOutputTo, clean, build, service);
 
-            output = output.Replace("$OutputPath$", coreOptions.OutputPath);
-            File.WriteAllText(coreOptions.OutputFile, output);
+            output = output.Replace("$OutputPath$", coreOptions.MsBuildFileOuputPath);
+            File.WriteAllText(coreOptions.MsBuildOutputFilename, output);
         }
 
         #endregion

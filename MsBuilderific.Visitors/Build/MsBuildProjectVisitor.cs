@@ -24,7 +24,7 @@ namespace MsBuilderific.Visitors.Build
                 condition = "Condition=\"$(BuildTestProjects)\"";
             
             string customOutputPath = null;
-            if (!string.IsNullOrEmpty(coreOptions.OutputPath))
+            if (!string.IsNullOrEmpty(coreOptions.MsBuildFileOuputPath))
                 customOutputPath = "OutputPath=$(OutputPath)";
 
             buildCommand.AppendLine(String.Format("		<MSBuild Properties=\"Configuration=$(Configuration);Platform=$(PlatformConfig);{0}\" Projects=\"{1}\" Targets=\"$(Action)\" StopOnFirstFailure=\"True\" ContinueOnError=\"$(ContinueOnError)\" UnloadProjectsOnCompletion=\"$(UnloadProjectsOnCompletion)\" UseResultsCache=\"$(UseResultsCache)\" {2} >", customOutputPath, project.GetRelativeFilePath(coreOptions), condition));

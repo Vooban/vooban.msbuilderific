@@ -24,9 +24,9 @@ namespace MsBuilderific.Console
 
             var finder = Injection.Engine.Resolve<IProjectDependencyFinder>();
 
-            if (options.ExclusionPatterns != null)
+            if (options.ProjectDetectionExclusionPatterns != null)
             {
-                foreach (var exclusion in options.ExclusionPatterns)
+                foreach (var exclusion in options.ProjectDetectionExclusionPatterns)
                     finder.AddExclusionPattern(exclusion);
             }
 
