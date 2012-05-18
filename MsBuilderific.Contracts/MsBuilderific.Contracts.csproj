@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IMsBuilderificCoreOptions.cs" />
     <Compile Include="IMsBuilderificOptions.cs" />
     <Compile Include="IMsBuildFileCore.cs" />
     <Compile Include="IProjectDependencyFinder.cs" />

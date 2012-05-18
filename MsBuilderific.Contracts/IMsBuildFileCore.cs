@@ -23,7 +23,7 @@ namespace MsBuilderific.Contracts
         /// <param name="dependencyOrder">
         /// The order in which the MsBuildScript shall be generated
         /// </param>
-        /// <param name="options">The options that will be passed to the visitors</param>
-        void WriteBuildScript(List<VisualStudioProject> dependencyOrder, IMsBuilderificOptions options);
+        /// <param name="coreOptions">The coreOptions that will be passed to the visitors</param>
+        void WriteBuildScript(List<VisualStudioProject> dependencyOrder, IMsBuilderificCoreOptions coreOptions);
     }
 }

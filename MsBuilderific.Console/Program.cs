@@ -12,7 +12,7 @@ namespace MsBuilderific.Console
     {
         static void Main(string[] args)
         {            
-            var options = new Options();
+            var options = new MsBuilderificCoreOptions();
 
             if (args != null && args.Length>0)
             {

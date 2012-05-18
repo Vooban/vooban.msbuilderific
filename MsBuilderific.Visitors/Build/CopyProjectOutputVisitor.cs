@@ -9,17 +9,17 @@ namespace MsBuilderific.Visitors.Build
 {
     public class CopyProjectOutputVisitor : BuildOrderVisitor
     {
-        public override bool ShallExecute(IMsBuilderificOptions options)
+        public override bool ShallExecute(IMsBuilderificCoreOptions coreOptions)
         {
-            return options == null || !string.IsNullOrEmpty(options.CopyOutputTo);
+            return coreOptions == null || !string.IsNullOrEmpty(coreOptions.CopyOutputTo);
         }
 
-        public override string VisitServiceTarget(VisualStudioProject project, IMsBuilderificOptions options)
+        public override string VisitServiceTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions)
         {
-            return VisitBuildAllTypeTarget(project, options);
+            return VisitBuildAllTypeTarget(project, coreOptions);
         }
 
-        public override string VisitBuildAllTypeTarget(VisualStudioProject project, IMsBuilderificOptions options)
+        public override string VisitBuildAllTypeTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions)
         {
             var buildBuilder = new StringBuilder();
 
@@ -29,22 +29,22 @@ namespace MsBuilderific.Visitors.Build
             else
                 extensions.Add("dll");
 
-            if (options.CopyPdbs)
+            if (coreOptions.CopyPdbs)
                 extensions.Add("pdb");
 
             foreach (var ext in extensions)
             {
                 var capitalizedExt = char.ToUpper(ext[0]) + ext.Substring(1);
-                buildBuilder.AppendLine(AddCopyInformation(project, options, capitalizedExt, false));
+                buildBuilder.AppendLine(AddCopyInformation(project, coreOptions, capitalizedExt, false));
             }
 
             return buildBuilder.ToString();
         }
 
-        private string AddCopyInformation(VisualStudioProject project, IMsBuilderificOptions options, string capitalizedExt, bool uniqueOutputPath)
+        private string AddCopyInformation(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions, string capitalizedExt, bool uniqueOutputPath)
         {
             var buildBuilder = new StringBuilder();
-            var folder = project.GetRelativeFolderPath(options);
+            var folder = project.GetRelativeFolderPath(coreOptions);
 
             if (!uniqueOutputPath)
             {

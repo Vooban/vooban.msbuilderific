@@ -7,36 +7,36 @@ namespace MsBuilderific.Visitors.Build
 {
     public class CopyMsDeployPackagesVisitor : BuildOrderVisitor
     {
-        public override bool ShallExecute(IMsBuilderificOptions options)
+        public override bool ShallExecute(IMsBuilderificCoreOptions coreOptions)
         {
-            return options == null || options.GeneratePackagesOnBuild;
+            return coreOptions == null || coreOptions.GeneratePackagesOnBuild;
         }
 
-        public override string VisitServiceTarget(VisualStudioProject project, IMsBuilderificOptions options)
+        public override string VisitServiceTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions)
         {
-            return VisitBuildWebProjectTarget(project, options);
+            return VisitBuildWebProjectTarget(project, coreOptions);
         }
 
-        public override string VisitBuildWebProjectTarget(VisualStudioProject project, IMsBuilderificOptions options)
+        public override string VisitBuildWebProjectTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions)
         {
             var buildBuilder = new StringBuilder();
 
-            options.Transforms.ForEach(t => buildBuilder.AppendLine(AddCopyPackagesInformation(project, options, false, t)));
+            coreOptions.Transforms.ForEach(t => buildBuilder.AppendLine(AddCopyPackagesInformation(project, coreOptions, false, t)));
             
-            buildBuilder.AppendLine(AddCopyPackagesInformation(project, options, false));
+            buildBuilder.AppendLine(AddCopyPackagesInformation(project, coreOptions, false));
 
             return buildBuilder.ToString();
         }
 
-        public override string VisitBuildExeProjectTarget(VisualStudioProject project, IMsBuilderificOptions options)
+        public override string VisitBuildExeProjectTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions)
         {
-            return VisitBuildWebProjectTarget(project, options);
+            return VisitBuildWebProjectTarget(project, coreOptions);
         }
 
-        private static string AddCopyPackagesInformation(VisualStudioProject project, IMsBuilderificOptions options, bool uniqueOutputPath, string configuration = "$(Configuration)")
+        private static string AddCopyPackagesInformation(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions, bool uniqueOutputPath, string configuration = "$(Configuration)")
         {
             var buildBuilder = new StringBuilder();
-            var folder = project.GetRelativeFolderPath(options);
+            var folder = project.GetRelativeFolderPath(coreOptions);
             string temp;
             string command;
 

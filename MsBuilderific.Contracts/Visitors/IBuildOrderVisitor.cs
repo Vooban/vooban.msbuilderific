@@ -2,19 +2,19 @@ namespace MsBuilderific.Contracts.Visitors
 {
     public interface IBuildOrderVisitor
     {
-        string PreVisitBuildTarget(VisualStudioProject project, IMsBuilderificOptions options);
-        string VisitBuildAllTypeTarget(VisualStudioProject project, IMsBuilderificOptions options);
-        string VisitBuildLibraryProjectTarget(VisualStudioProject project, IMsBuilderificOptions options);
-        string VisitBuildWebProjectTarget(VisualStudioProject project, IMsBuilderificOptions options);
-        string VisitBuildExeProjectTarget(VisualStudioProject project, IMsBuilderificOptions options);
-        string PostVisitBuildTarget(VisualStudioProject project, IMsBuilderificOptions options);
-        string PreVisitServiceTarget(VisualStudioProject project, IMsBuilderificOptions options);
-        string VisitServiceTarget(VisualStudioProject project, IMsBuilderificOptions options);
-        string PostVisitServiceTarget(VisualStudioProject project, IMsBuilderificOptions options);
-        string PreVisitCleanTarget(VisualStudioProject project, IMsBuilderificOptions options);
-        string VisitCleanTarget(VisualStudioProject project, IMsBuilderificOptions options);
-        string PostVisitCleanTarget(VisualStudioProject project, IMsBuilderificOptions options);
+        string PreVisitBuildTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions);
+        string VisitBuildAllTypeTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions);
+        string VisitBuildLibraryProjectTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions);
+        string VisitBuildWebProjectTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions);
+        string VisitBuildExeProjectTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions);
+        string PostVisitBuildTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions);
+        string PreVisitServiceTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions);
+        string VisitServiceTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions);
+        string PostVisitServiceTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions);
+        string PreVisitCleanTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions);
+        string VisitCleanTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions);
+        string PostVisitCleanTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions);
         int Order { get; set; }
-        bool ShallExecute(IMsBuilderificOptions options);
+        bool ShallExecute(IMsBuilderificCoreOptions coreOptions);
     }
 }

@@ -7,25 +7,25 @@ namespace MsBuilderific.Visitors.Build
 {
     public class MsTestsProjectVisitor : BuildOrderVisitor
     {
-        public override string VisitBuildExeProjectTarget(VisualStudioProject project, IMsBuilderificOptions options)
+        public override string VisitBuildExeProjectTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions)
         {
             // Same logic for exe and library projects, defaults to same implementation
-            return VisitBuildLibraryProjectTarget(project, options);
+            return VisitBuildLibraryProjectTarget(project, coreOptions);
         }
 
-        public override string VisitBuildLibraryProjectTarget(VisualStudioProject project, IMsBuilderificOptions options)
+        public override string VisitBuildLibraryProjectTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions)
         {            
-            if (Regex.IsMatch(project.AssemblyName, options.TestDiscoveryPattern))
+            if (Regex.IsMatch(project.AssemblyName, coreOptions.TestDiscoveryPattern))
             {
-                return string.Format("		<Exec Command='\"$(MsTestLocation)\" /testcontainer:{0}\\$(TestBinFolder)\\{1}.dll /runconfig:$(MsTestGlobalSettingsFile) /category:\"$(MsTestCategories)\" /usestderr /detail:errormessage /detail:errorstacktrace' ContinueOnError=\"$(ContinueOnTestError)\" Condition=\"$(ExecuteTests)\" />", project.GetRelativeFolderPath(options), project.AssemblyName);                
+                return string.Format("		<Exec Command='\"$(MsTestLocation)\" /testcontainer:{0}\\$(TestBinFolder)\\{1}.dll /runconfig:$(MsTestGlobalSettingsFile) /category:\"$(MsTestCategories)\" /usestderr /detail:errormessage /detail:errorstacktrace' ContinueOnError=\"$(ContinueOnTestError)\" Condition=\"$(ExecuteTests)\" />", project.GetRelativeFolderPath(coreOptions), project.AssemblyName);                
             }
 
             return null;
         }
 
-        public override bool ShallExecute(IMsBuilderificOptions options)
+        public override bool ShallExecute(IMsBuilderificCoreOptions coreOptions)
         {
-            return options.GenerateMsTestTask && !string.IsNullOrEmpty(options.TestDiscoveryPattern);
+            return coreOptions.GenerateMsTestTask && !string.IsNullOrEmpty(coreOptions.TestDiscoveryPattern);
         }
     }
 }

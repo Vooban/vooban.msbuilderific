@@ -64,18 +64,18 @@ namespace MsBuilderific.Core
         /// <summary>
         /// Build the dependency graph between the projects in the root folder and optionnaly save the graph in a GraphML file
         /// </summary>
-        /// <param name="options">
-        /// The options used to get the dependency order of the projects
+        /// <param name="coreOptions">
+        /// The coreOptions used to get the dependency order of the projects
         /// </param>
         /// <returns>
         /// The list of <see cref="VisualStudioProject"/> in the correct build order
         /// </returns>
-        public List<VisualStudioProject> GetDependencyOrder(IMsBuilderificOptions options)
+        public List<VisualStudioProject> GetDependencyOrder(IMsBuilderificCoreOptions coreOptions)
         {
-            var graph = GetDependencyGraph(options);
+            var graph = GetDependencyGraph(coreOptions);
 
-            if (!string.IsNullOrEmpty(options.GraphFilename))
-                PersistGraph(graph, options.GraphFilename);
+            if (!string.IsNullOrEmpty(coreOptions.GraphFilename))
+                PersistGraph(graph, coreOptions.GraphFilename);
 
             return GetDependencyOrderFromGraph(graph);
         }
@@ -101,25 +101,25 @@ namespace MsBuilderific.Core
         /// <summary>
         /// Build the dependency graph from the projects found in the root folder - the exlusion patterns
         /// </summary>
-        /// <param name="options">
-        /// The options used to get the dependency order of the projects
+        /// <param name="coreOptions">
+        /// The coreOptions used to get the dependency order of the projects
         /// </param>
         /// <returns>
         /// A graph representing the dependencies between the projects in the root folder
         /// </returns>
-        public AdjacencyGraph<VisualStudioProject, Edge<VisualStudioProject>> GetDependencyGraph(IMsBuilderificOptions options)
+        public AdjacencyGraph<VisualStudioProject, Edge<VisualStudioProject>> GetDependencyGraph(IMsBuilderificCoreOptions coreOptions)
         {
-            if (!Directory.Exists(options.RootFolder))
-                throw new ArgumentException(string.Format("Le répertoire source est inexistant : {0}", options.RootFolder), "rootFolder");
+            if (!Directory.Exists(coreOptions.RootFolder))
+                throw new ArgumentException(string.Format("Le répertoire source est inexistant : {0}", coreOptions.RootFolder), "rootFolder");
 
             var graph = new AdjacencyGraph<VisualStudioProject, Edge<VisualStudioProject>>();
 
-            var projects = Directory.GetFiles(options.RootFolder, "*.*proj", SearchOption.AllDirectories);
-            if (options.CSharpSupport && options.VbNetSupport)
+            var projects = Directory.GetFiles(coreOptions.RootFolder, "*.*proj", SearchOption.AllDirectories);
+            if (coreOptions.CSharpSupport && coreOptions.VbNetSupport)
                 projects = projects.Where(s => s.EndsWith(".vbproj") || s.EndsWith(".csproj")).ToArray();
-            else if (options.CSharpSupport)
+            else if (coreOptions.CSharpSupport)
                 projects = projects.Where(s => s.EndsWith(".csproj")).ToArray();
-            else if (options.VbNetSupport)
+            else if (coreOptions.VbNetSupport)
                 projects = projects.Where(s => s.EndsWith(".vbproj")).ToArray();
             else 
                 projects = new string[]{};

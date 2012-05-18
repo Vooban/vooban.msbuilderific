@@ -10,16 +10,16 @@ namespace MsBuilderific.Visitors.Build
 {
     public class MsDeployProjectVisitor : BuildOrderVisitor
     {
-        public override bool ShallExecute(IMsBuilderificOptions options)
+        public override bool ShallExecute(IMsBuilderificCoreOptions coreOptions)
         {
-            return options.GeneratePackagesOnBuild;
+            return coreOptions.GeneratePackagesOnBuild;
         }
 
-        public override string VisitBuildExeProjectTarget(VisualStudioProject project, IMsBuilderificOptions options)
+        public override string VisitBuildExeProjectTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions)
         {
             var packageCommand = new StringBuilder();
-            var folder = project.GetRelativeFolderPath(options);
-            var filename = project.GetRelativeFilePath(options);
+            var folder = project.GetRelativeFolderPath(coreOptions);
+            var filename = project.GetRelativeFilePath(coreOptions);
 
             var packagingCondition = string.Format("Condition=\"$(GenerateMsDeployPackages) AND Exists('{0}\\bin') \" ", folder);                
 
@@ -29,38 +29,38 @@ namespace MsBuilderific.Visitors.Build
             return packageCommand.ToString();
         }
 
-        public override string VisitBuildWebProjectTarget(VisualStudioProject project, IMsBuilderificOptions options)
+        public override string VisitBuildWebProjectTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions)
         {
             var packageCommand = new StringBuilder();
-            var folder = project.GetRelativeFolderPath(options);
+            var folder = project.GetRelativeFolderPath(coreOptions);
 
-            if (options.Transforms != null && options.Transforms.Count > 0)
+            if (coreOptions.Transforms != null && coreOptions.Transforms.Count > 0)
             {
-                options.Transforms.ForEach(t =>
+                coreOptions.Transforms.ForEach(t =>
                                                {
                                                    packageCommand.AppendLine(string.Format("		<Delete Files=\"$(MSBuildProjectDirectory)\\{0}\\web.temp.{1}.config\" Condition=\"$(GenerateMsDeployPackages) AND Exists('{0}\\web.temp.{1}.config')\" />", folder, t));
                                                    packageCommand.AppendLine(string.Format("		<Copy SourceFiles=\"$(MSBuildProjectDirectory)\\{0}\\web.config\" DestinationFiles=\"$(MSBuildProjectDirectory)\\{0}\\web.temp.{1}.config\" Condition=\"$(GenerateMsDeployPackages) AND Exists('{0}\\web.{1}.config')\" />", folder, t));
                                                    packageCommand.AppendLine(string.Format("		<TransformXml Source=\"$(MSBuildProjectDirectory)\\{0}\\web.temp.{1}.config\" Transform=\"$(MSBuildProjectDirectory)\\{0}\\web.{1}.config\" Destination=\"$(MSBuildProjectDirectory)\\{0}\\web.transformed.{1}.config\" Condition=\"$(GenerateMsDeployPackages) AND Exists('{0}\\web.{1}.config')\" />", folder, t));
                   
-                                                   packageCommand.AppendLine(GetMsDeployCommand(project, options, t, true));
+                                                   packageCommand.AppendLine(GetMsDeployCommand(project, coreOptions, t, true));
                                                });
             }
 
-            packageCommand.AppendLine(GetMsDeployCommand(project, options));
+            packageCommand.AppendLine(GetMsDeployCommand(project, coreOptions));
 
             return packageCommand.ToString();     
         }
 
-        public override string VisitServiceTarget(VisualStudioProject project, IMsBuilderificOptions options)
+        public override string VisitServiceTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions)
         {            
-            return VisitBuildWebProjectTarget(project, options);
+            return VisitBuildWebProjectTarget(project, coreOptions);
         }
 
-        private string GetMsDeployCommand(VisualStudioProject project, IMsBuilderificOptions options, string configuration = "$(Configuration)", bool isTransform = false)
+        private string GetMsDeployCommand(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions, string configuration = "$(Configuration)", bool isTransform = false)
         {
             var packageCommand = new StringBuilder();
-            var folder = project.GetRelativeFolderPath(options);
-            var filename = project.GetRelativeFilePath(options);
+            var folder = project.GetRelativeFolderPath(coreOptions);
+            var filename = project.GetRelativeFilePath(coreOptions);
             var regExParamEntry = string.Format(".+\\\\{0}", Regex.Escape(folder));
 
             string conditions ;

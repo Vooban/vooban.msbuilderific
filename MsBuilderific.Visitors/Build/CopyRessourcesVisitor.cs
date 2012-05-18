@@ -14,29 +14,29 @@ namespace MsBuilderific.Visitors.Build
             _ressourceFinder = ressourceFinder;
         }
 
-        public override bool ShallExecute(IMsBuilderificOptions options)
+        public override bool ShallExecute(IMsBuilderificCoreOptions coreOptions)
         {
-            return options == null || !string.IsNullOrEmpty(options.CopyOutputTo);
+            return coreOptions == null || !string.IsNullOrEmpty(coreOptions.CopyOutputTo);
         }
 
-        public override string VisitServiceTarget(VisualStudioProject project, IMsBuilderificOptions options)
+        public override string VisitServiceTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions)
         {
-            return VisitBuildAllTypeTarget(project, options);
+            return VisitBuildAllTypeTarget(project, coreOptions);
         }
 
-        public override string VisitBuildAllTypeTarget(VisualStudioProject project, IMsBuilderificOptions options)
+        public override string VisitBuildAllTypeTarget(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions)
         {
             var buildBuilder = new StringBuilder();
 
-            buildBuilder.AppendLine(AddCopyRessourcesInformation(project, options, false));
+            buildBuilder.AppendLine(AddCopyRessourcesInformation(project, coreOptions, false));
 
             return buildBuilder.ToString();
         }
 
-        private string AddCopyRessourcesInformation(VisualStudioProject project, IMsBuilderificOptions options, bool uniqueOutputPath)
+        private string AddCopyRessourcesInformation(VisualStudioProject project, IMsBuilderificCoreOptions coreOptions, bool uniqueOutputPath)
         {
             var buildBuilder = new StringBuilder();
-            var folder = project.GetRelativeFolderPath(options);
+            var folder = project.GetRelativeFolderPath(coreOptions);
 
             foreach (var currentRessource in _ressourceFinder.ExtractRessourcesFromProject(project.Path))
             {

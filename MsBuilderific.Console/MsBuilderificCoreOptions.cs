@@ -9,7 +9,7 @@ namespace MsBuilderific.Console
     /// <summary>
     /// Command line switches which can be used by the program
     /// </summary>
-    internal class Options : IMsBuilderificOptions
+    internal class MsBuilderificCoreOptions : IMsBuilderificCoreOptions
     {
         #region Public Properties
 

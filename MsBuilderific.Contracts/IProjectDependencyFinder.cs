@@ -24,13 +24,13 @@ namespace MsBuilderific.Contracts
         /// <summary>
         /// Build the dependency graph between the projects in the root folder and optionnaly save the graph in a GraphML file
         /// </summary>
-        /// <param name="options">
-        /// The options used to get the dependency order of the projects
+        /// <param name="coreOptions">
+        /// The coreOptions used to get the dependency order of the projects
         /// </param>
         /// <returns>
         /// The list of <see cref="VisualStudioProject"/> in the correct build order
         /// </returns>
-        List<VisualStudioProject> GetDependencyOrder(IMsBuilderificOptions options);
+        List<VisualStudioProject> GetDependencyOrder(IMsBuilderificCoreOptions coreOptions);
 
         /// <summary>
         /// Process the graph to generate the correct project build order
@@ -46,13 +46,13 @@ namespace MsBuilderific.Contracts
         /// <summary>
         /// Build the dependency graph from the projects found in the root folder - the exlusion patterns
         /// </summary>
-        /// <param name="options">
-        /// The options used to get the dependency order of the projects
+        /// <param name="coreOptions">
+        /// The coreOptions used to get the dependency order of the projects
         /// </param>
         /// <returns>
         /// A graph representing the dependencies between the projects in the root folder
         /// </returns>
-        AdjacencyGraph<VisualStudioProject, Edge<VisualStudioProject>> GetDependencyGraph(IMsBuilderificOptions options);
+        AdjacencyGraph<VisualStudioProject, Edge<VisualStudioProject>> GetDependencyGraph(IMsBuilderificCoreOptions coreOptions);
 
         /// <summary>
         /// Saves the graph in the GraphML format in the specified filename

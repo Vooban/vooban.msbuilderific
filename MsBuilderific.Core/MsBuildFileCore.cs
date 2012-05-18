@@ -71,8 +71,8 @@ namespace MsBuilderific.Core
         /// <param name="dependencyOrder">
         /// The order in which the MsBuildScript shall be generated
         /// </param>
-        /// <param name="options">The options that will be passed to the visitors</param>
-        public void WriteBuildScript(List<VisualStudioProject> dependencyOrder, IMsBuilderificOptions options)
+        /// <param name="coreOptions">The coreOptions that will be passed to the visitors</param>
+        public void WriteBuildScript(List<VisualStudioProject> dependencyOrder, IMsBuilderificCoreOptions coreOptions)
         {
             if (dependencyOrder == null)
                 return;
@@ -95,30 +95,30 @@ namespace MsBuilderific.Core
                 var sortedVisitors = _visitors.OrderBy(s => s.Order);
                 sortedVisitors.ToList().ForEach(v =>
                                       {
-                                          if (v == null || !v.ShallExecute(options))
+                                          if (v == null || !v.ShallExecute(coreOptions))
                                               return;
 
-                                          cleanStringBuilder.AppendLine(v.PreVisitCleanTarget(currentVisualStudioProject, options));
-                                          cleanStringBuilder.AppendLine(v.VisitCleanTarget(currentVisualStudioProject, options));
-                                          cleanStringBuilder.AppendLine(v.PostVisitCleanTarget(currentVisualStudioProject, options));
+                                          cleanStringBuilder.AppendLine(v.PreVisitCleanTarget(currentVisualStudioProject, coreOptions));
+                                          cleanStringBuilder.AppendLine(v.VisitCleanTarget(currentVisualStudioProject, coreOptions));
+                                          cleanStringBuilder.AppendLine(v.PostVisitCleanTarget(currentVisualStudioProject, coreOptions));
 
-                                          preBuildStringBuilder.AppendLine(v.PreVisitBuildTarget(currentVisualStudioProject, options));
+                                          preBuildStringBuilder.AppendLine(v.PreVisitBuildTarget(currentVisualStudioProject, coreOptions));
                                           if (currentVisualStudioProject.IsWebProject)
-                                              buildStringBuilder.AppendLine(v.VisitBuildWebProjectTarget(currentVisualStudioProject, options));
+                                              buildStringBuilder.AppendLine(v.VisitBuildWebProjectTarget(currentVisualStudioProject, coreOptions));
                                           else if (currentVisualStudioProject.OutputType != ProjectOutputType.Library.ToString())
-                                              buildStringBuilder.AppendLine(v.VisitBuildExeProjectTarget(currentVisualStudioProject, options));
+                                              buildStringBuilder.AppendLine(v.VisitBuildExeProjectTarget(currentVisualStudioProject, coreOptions));
                                           else
-                                              buildStringBuilder.AppendLine(v.VisitBuildLibraryProjectTarget(currentVisualStudioProject, options));
+                                              buildStringBuilder.AppendLine(v.VisitBuildLibraryProjectTarget(currentVisualStudioProject, coreOptions));
                                           
-                                          buildStringBuilder.AppendLine(v.VisitBuildAllTypeTarget(currentVisualStudioProject, options));
+                                          buildStringBuilder.AppendLine(v.VisitBuildAllTypeTarget(currentVisualStudioProject, coreOptions));
                                           
-                                          postBuildStringBuilder.AppendLine(v.PostVisitBuildTarget(currentVisualStudioProject, options));
+                                          postBuildStringBuilder.AppendLine(v.PostVisitBuildTarget(currentVisualStudioProject, coreOptions));
 
-                                          if (options.GenerateSpecificTargetForWebProject && currentVisualStudioProject.IsWebProject)
+                                          if (coreOptions.GenerateSpecificTargetForWebProject && currentVisualStudioProject.IsWebProject)
                                           {
-                                              preServiceStringBuilder.AppendLine(v.PreVisitServiceTarget(currentVisualStudioProject, options));
-                                              serviceStringBuilder.AppendLine(v.VisitServiceTarget(currentVisualStudioProject, options));
-                                              postServiceStringBuilder.AppendLine(v.PostVisitServiceTarget(currentVisualStudioProject, options));
+                                              preServiceStringBuilder.AppendLine(v.PreVisitServiceTarget(currentVisualStudioProject, coreOptions));
+                                              serviceStringBuilder.AppendLine(v.VisitServiceTarget(currentVisualStudioProject, coreOptions));
+                                              postServiceStringBuilder.AppendLine(v.PostVisitServiceTarget(currentVisualStudioProject, coreOptions));
                                           }
                                       });                              
             }
@@ -132,10 +132,10 @@ namespace MsBuilderific.Core
             var clean = Regex.Replace(cleanStringBuilder.ToString(), @"(?m)^[ \t]*\r?\n", string.Empty, RegexOptions.Multiline);
             var build = Regex.Replace(buildStringBuilder.ToString(), @"(?m)^[ \t]*\r?\n", string.Empty, RegexOptions.Multiline);
             var service = Regex.Replace(serviceStringBuilder.ToString(), @"(?m)^[ \t]*\r?\n", string.Empty, RegexOptions.Multiline);
-            var output = string.Format(Properties.Resources.msbuildtemplate, options.CopyOutputTo, clean, build, service);
+            var output = string.Format(Properties.Resources.msbuildtemplate, coreOptions.CopyOutputTo, clean, build, service);
 
-            output = output.Replace("$OutputPath$", options.OutputPath);
-            File.WriteAllText(options.OutputFile, output);
+            output = output.Replace("$OutputPath$", coreOptions.OutputPath);
+            File.WriteAllText(coreOptions.OutputFile, output);
         }
 
         #endregion
