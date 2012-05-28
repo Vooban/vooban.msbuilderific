@@ -14,7 +14,7 @@ How to invoke MsBuilderific
 
 The project comes in the form a dll and can be easily integrated into you build server or any custom application. Using MsBuilderific is quite simple, here's how :
 
-<code>
+```csharp
 // Supports only the vbproj
 var finder = new ProjectDependencyFinder(true, false);
 
@@ -29,19 +29,19 @@ var buildOder = finder.GetDependencyOrder(@"C:\Source\", @"C:\Source\Build\mybui
 // copy built DLL to C:\Source\Binaries automatically in the build script
 var generator = new MsBuildFileGenerator(@"C:\Source\Build\mybuildfile.build", "C:\Source\Binaries", true);
 generator.WriteBuildScript(buildOder);
-</code>
+```
 
 How to invoke the generated build file
 --------------------------------------
 
 To invoke the build once your build file is generated use the following :
 
-<code>
+```
 msbuild myproject.build /t:rebuild
-</code>
+```
 
 The following options can be specified to msbuild :
-<code>
+```
 /target:targetName
 The available targets are :
 Clean : Deletes all ouput files in the project's obj and bin folder, and also delete any content in the deployment folder
@@ -53,6 +53,6 @@ RebuildServices : Cleans and then perform a build operation of web projects
 /verbosity:level
 {The available verbosity levels are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic]}. /v is also acceptable. For exemple /v:m
 /property:ContinueOnError=True/False
-</code>
+```
 
 If set to true, allows you to continue building projects even if one of these project failed to compile
