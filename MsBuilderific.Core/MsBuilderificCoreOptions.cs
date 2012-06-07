@@ -16,7 +16,7 @@ namespace MsBuilderific.Core
         /// <summary>
         /// Gets or sets the build output path
         /// </summary>
-        [Option("op", "outputPath", HelpText = "The project's build output path", Required = false)]
+        [Option("m", "outputPath", HelpText = "The project's build output path", Required = false)]
         public String MsBuildFileOuputPath { get; set; }
 
         /// <summary>

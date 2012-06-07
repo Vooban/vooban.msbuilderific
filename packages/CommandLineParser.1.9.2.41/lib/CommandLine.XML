@@ -24,6 +24,7 @@
             True if this command line option is required.
             </summary>
         </member>
+        <!-- Badly formed XML comment ignored for member "P:CommandLine.BaseOptionAttribute.DefaultValue" -->
         <member name="P:CommandLine.BaseOptionAttribute.HelpText">
             <summary>
             A short description of this command line option. Usually a sentence summary. 
@@ -414,6 +415,14 @@
             The sentence 'violates mutual exclusiveness'.
             </value>
         </member>
+        <member name="P:CommandLine.Text.BaseSentenceBuilder.ErrorsHeadingText">
+            <summary>
+            Gets a string containing the error heading text.
+            </summary>
+            <value>
+            The error heading text.
+            </value>
+        </member>
         <member name="T:CommandLine.Text.EnglishSentenceBuilder">
             <summary>
             Models an english sentence builder, currently the default one.
@@ -458,6 +467,14 @@
             <value>
             The sentence 'violates mutual exclusiveness' in english.
             </value>        
+        </member>
+        <member name="P:CommandLine.Text.EnglishSentenceBuilder.ErrorsHeadingText">
+            <summary>
+            Gets a string containing the error heading text in english.
+            </summary>
+            <value>
+            The error heading text in english.
+            </value>
         </member>
         <member name="T:CommandLine.Text.CopyrightInfo">
             <summary>
@@ -588,6 +605,11 @@
             <param name="message">The <see cref="T:System.String"/> message to write.</param>
             <exception cref="T:System.ArgumentException">Thrown when parameter <paramref name="message"/> is null or empty string.</exception>
         </member>
+        <member name="T:CommandLine.Text.HandleParsingErrorsDelegate">
+            <summary>
+            Handle parsing errors delegate.
+            </summary>
+        </member>
         <member name="T:CommandLine.Text.FormatOptionHelpTextEventArgs">
             <summary>
             Provides data for the FormatOptionHelpText event.
@@ -668,6 +690,31 @@
             an instance of <see cref="T:CommandLine.Text.CopyrightInfo"/>.</param>
             <param name="options">The instance that collected command line arguments parsed with <see cref="T:CommandLine.CommandLineParser"/> class.</param>
             <exception cref="T:System.ArgumentException">Thrown when one or more parameters <paramref name="heading"/> are null or empty strings.</exception>
+        </member>
+        <member name="M:CommandLine.Text.HelpText.AutoBuild(System.Object)">
+            <summary>
+            Creates a new instance of the <see cref="T:CommandLine.Text.HelpText"/> class using common defaults.
+            </summary>
+            <returns>
+            An instance of <see cref="T:CommandLine.Text.HelpText"/> class.
+            </returns>
+            <param name="options">
+            The instance that collected command line arguments parsed with <see cref="T:CommandLine.CommandLineParser"/> class.
+            </param>
+        </member>
+        <member name="M:CommandLine.Text.HelpText.AutoBuild(System.Object,CommandLine.Text.HandleParsingErrorsDelegate)">
+            <summary>
+            Creates a new instance of the <see cref="T:CommandLine.Text.HelpText"/> class using common defaults.
+            </summary>
+            <returns>
+            An instance of <see cref="T:CommandLine.Text.HelpText"/> class.
+            </returns>
+            <param name="options">
+            The instance that collected command line arguments parsed with <see cref="T:CommandLine.CommandLineParser"/> class.
+            </param>
+            <param name="errDelegate">
+            A delegate used to customize the text block for reporting parsing errors.
+            </param>
         </member>
         <member name="M:CommandLine.Text.HelpText.AddPreOptionsLine(System.String)">
             <summary>
