@@ -23,7 +23,7 @@
         <ContinueOnError>False</ContinueOnError>
         <OutputPath>$OutputPath$</OutputPath>
         <DestinationFolder>{0}</DestinationFolder>
-        <TestBinFolder>bin</TestBinFolder>
+        <TestBinFolder>bin\Debug</TestBinFolder>
         <CopyEnabled>True</CopyEnabled>
         <CopyXml>True</CopyXml>
         <CopyPdb>True</CopyPdb>
@@ -34,11 +34,10 @@
         <CopyRessources>True</CopyRessources>
         <UnloadProjectsOnCompletion>True</UnloadProjectsOnCompletion>
         <UseResultsCache>True</UseResultsCache>
-        <ExecuteTests>False</ExecuteTests>
+        <ExecuteTests>True</ExecuteTests>
         <ContinueOnTestError>False</ContinueOnTestError>
-        <MsTestCategories>!Fonctionnel</MsTestCategories>
-        <MsTestGlobalSettingsFile>misa.testsettings</MsTestGlobalSettingsFile>
-        <MsTestLocation>%VS100COMNTOOLS%..\IDE\mstest.exe</MsTestLocation>
+        <MsTestCategories>!Fonctionnel</MsTestCategories>        
+        <MsTestLocation>%ProgramFiles%\Microsoft Visual Studio 10.0\Common7\IDE\mstest.exe</MsTestLocation>
         <MsDeployLocation>%ProgramFiles%\IIS\Microsoft Web Deploy\msdeploy.exe</MsDeployLocation>        
         <MsDeployPackageTempDir>C:\Pkg</MsDeployPackageTempDir>
         <GenerateMsDeployPackages>False</GenerateMsDeployPackages>

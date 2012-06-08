@@ -58,12 +58,14 @@
     <Compile Include="Build\CopyProjectOutputVisitor.cs" />
     <Compile Include="Build\CopyRessourcesVisitor.cs" />
     <Compile Include="Build\DeleteBinAfterPackagingVisitor.cs" />
+    <Compile Include="Build\MsDeployProjectVisitorOptions.cs" />
+    <Compile Include="Build\MsTestsProjectVisitorOptions.cs" />
+    <Compile Include="Build\CopyProjectOutputVisitorOptions.cs" />
     <Compile Include="Build\MsBuildProjectVisitor.cs" />
     <Compile Include="Build\MsDeployProjectVisitor.cs" />
     <Compile Include="Build\MsTestsProjectVisitor.cs" />
     <Compile Include="Clean\CleanBuildArtefactsVisitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VisitorsOptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MsBuilderific.Contracts.Extensions\MsBuilderific.Contracts.Extensions.csproj">

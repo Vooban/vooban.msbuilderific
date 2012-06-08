@@ -10,9 +10,9 @@ namespace MsBuilderific.Visitors.Build
 {
     public class MsDeployProjectVisitor : BuildOrderVisitor
     {
-        private readonly VisitorsOptions _options;
+        private readonly MsDeployProjectVisitorOptions _options;
 
-        public MsDeployProjectVisitor(VisitorsOptions options)
+        public MsDeployProjectVisitor(MsDeployProjectVisitorOptions options)
         {
             _options=options;
         }

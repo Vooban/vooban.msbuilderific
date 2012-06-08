@@ -7,9 +7,9 @@ namespace MsBuilderific.Visitors.Build
 {
     public class CopyMsDeployPackagesVisitor : BuildOrderVisitor
     {
-        private readonly VisitorsOptions _options;
+        private readonly MsDeployProjectVisitorOptions _options;
 
-        public CopyMsDeployPackagesVisitor(VisitorsOptions options)
+        public CopyMsDeployPackagesVisitor(MsDeployProjectVisitorOptions options)
         {
             _options=options;
         }

@@ -9,9 +9,9 @@ namespace MsBuilderific.Visitors.Build
 {
     public class CopyProjectOutputVisitor : BuildOrderVisitor
     {
-        private readonly VisitorsOptions _options;
+        private readonly CopyProjectOutputVisitorOptions _options;
 
-        public CopyProjectOutputVisitor(VisitorsOptions options)
+        public CopyProjectOutputVisitor(CopyProjectOutputVisitorOptions options)
         {
             _options=options;
         }
