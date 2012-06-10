@@ -6,11 +6,6 @@ namespace MsBuilderific.Contracts
     public interface IMsBuilderificCoreOptions : IMsBuilderificOptions
     {
         /// <summary>
-        /// Gets or sets the build output path
-        /// </summary>
-        String MsBuildFileOuputPath { get;  }
-
-        /// <summary>
         /// Gets or sets the list of file/folder exclusions that will be excluded from the dependency detection and build file generation process
         /// </summary>
         List<String> ProjectDetectionExclusionPatterns { get;  }

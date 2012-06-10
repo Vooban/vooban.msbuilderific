@@ -14,12 +14,6 @@ namespace MsBuilderific.Core
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the build output path
-        /// </summary>
-        [Option("m", "outputPath", HelpText = "The project's build output path", Required = false)]
-        public String MsBuildFileOuputPath { get; set; }
-
-        /// <summary>
         /// Gets or sets the list of file/folder exclusions that will be excluded from the dependency detection and build file generation process
         /// </summary>
         [OptionList("e", "exclusions", HelpText = "The list of excluded patterns, separated by ;", Required = false, Separator = ';')]

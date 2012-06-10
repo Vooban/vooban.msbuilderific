@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace MsBuilderific.Contracts.Visitors
 {
+    /// <summary>
+    /// Interface that each visitor must implements
+    /// </summary>
     public interface IVisitorOptions
     {
+
     }
 }

@@ -19,38 +19,18 @@
     </PropertyGroup>
 
     <PropertyGroup>         
-        <Action>Build</Action>
         <ContinueOnError>False</ContinueOnError>
-        <OutputPath>$OutputPath$</OutputPath>
         <DestinationFolder>{0}</DestinationFolder>
-        <TestBinFolder>bin\Debug</TestBinFolder>
-        <CopyEnabled>True</CopyEnabled>
-        <CopyXml>True</CopyXml>
-        <CopyPdb>True</CopyPdb>
-        <CopyExe>True</CopyExe>
-        <CopyConfig>True</CopyConfig>
-        <CopyDll>True</CopyDll>
-        <CopyCodeContracts>True</CopyCodeContracts>
-        <CopyRessources>True</CopyRessources>
-        <UnloadProjectsOnCompletion>True</UnloadProjectsOnCompletion>
-        <UseResultsCache>True</UseResultsCache>
-        <ExecuteTests>True</ExecuteTests>
-        <ContinueOnTestError>False</ContinueOnTestError>
-        <MsTestCategories>!Fonctionnel</MsTestCategories>        
-        <MsTestLocation>%ProgramFiles%\Microsoft Visual Studio 10.0\Common7\IDE\mstest.exe</MsTestLocation>
-        <MsDeployLocation>%ProgramFiles%\IIS\Microsoft Web Deploy\msdeploy.exe</MsDeployLocation>        
-        <MsDeployPackageTempDir>C:\Pkg</MsDeployPackageTempDir>
-        <GenerateMsDeployPackages>False</GenerateMsDeployPackages>
-        <BuildTestProjects>True</BuildTestProjects>        
+{1}
     </PropertyGroup>
 
     <ItemGroup>        
-{1}
+{2}
     </ItemGroup>
 
     <Target Name="Build" >
-        <Message Text="Starting the build process for configuration $(Configuration) in the following $(OutputPath)"/>
-{2}
+        <Message Text="Starting the build process for configuration $(Configuration)"/>
+{3}
     </Target>
         
     <Target Name="Clean">
@@ -62,7 +42,7 @@
 
     <Target Name="BuildServices" >
         <Message Text="Starting to Build services"/>
-{3}
+{4}
     </Target>
 
     <Target Name="CleanServices">

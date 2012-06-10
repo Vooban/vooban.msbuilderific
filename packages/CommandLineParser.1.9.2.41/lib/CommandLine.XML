@@ -24,7 +24,11 @@
             True if this command line option is required.
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "P:CommandLine.BaseOptionAttribute.DefaultValue" -->
+        <member name="P:CommandLine.BaseOptionAttribute.DefaultValue">
+            <summary>
+            Gets or sets mapped property default value.
+            </summary>
+        </member>
         <member name="P:CommandLine.BaseOptionAttribute.HelpText">
             <summary>
             A short description of this command line option. Usually a sentence summary. 
@@ -143,11 +147,13 @@
             <summary>
             The short name of the option
             </summary>
+            <value>Returns the short name of the option.</value>
         </member>
         <member name="P:CommandLine.BadOptionInfo.LongName">
             <summary>
             The long name of the option
             </summary>
+            <value>Returns the long name of the option.</value>
         </member>
         <member name="T:CommandLine.ParsingError">
             <summary>
@@ -293,6 +299,17 @@
             <param name="helpWriter">Any instance derived from <see cref="T:System.IO.TextWriter"/>,
             default <see cref="P:System.Console.Error"/>. Setting this argument to null, will disable help screen.</param>
         </member>
+        <member name="M:CommandLine.CommandLineParserSettings.#ctor(System.Boolean,System.Boolean,System.Boolean,System.IO.TextWriter)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CommandLine.CommandLineParserSettings"/> class,
+            setting case comparison, mutually exclusive behavior and help output option.
+            </summary>
+            <param name="caseSensitive">If set to true, parsing will be case sensitive.</param>
+            <param name="mutuallyExclusive">If set to true, enable mutually exclusive behavior.</param>
+            <param name="ignoreUnknownArguments">If set to true, allow the parser to skip unknown argument, otherwise return a parse failure</param>
+            <param name="helpWriter">Any instance derived from <see cref="T:System.IO.TextWriter"/>,
+            default <see cref="P:System.Console.Error"/>. Setting this argument to null, will disable help screen.</param>
+        </member>
         <member name="P:CommandLine.CommandLineParserSettings.CaseSensitive">
             <summary>
             Gets or sets the case comparison behavior.
@@ -310,6 +327,19 @@
             Gets or sets the <see cref="T:System.IO.TextWriter"/> used for help method output.
             Setting this property to null, will disable help screen.
             </summary>
+        </member>
+        <member name="P:CommandLine.CommandLineParserSettings.IgnoreUnknownArguments">
+            <summary>
+            Gets or sets a value indicating if the parser shall move on to the next argument and ignore the given argument if it
+            encounter an unknown arguments
+            </summary>
+            <value>
+            <c>true</c> to allow parsing the arguments with differents class options that do not have all the arguments.
+            </value>
+            <remarks>
+            This allows fragmented version class parsing, useful for project with addon where addons also requires command line arguments but
+            when these are unknown by the main program at build time.
+            </remarks>
         </member>
         <member name="T:CommandLine.CommandLineParser">
             <summary>

@@ -10,7 +10,7 @@ namespace MsBuilderific.Visitors.Build
         /// <summary>
         /// Gets or sets a value indicating if we generate msbuild packages 
         /// </summary>
-        [Option("z", "generatePackages", HelpText = "True to generate msbuild packages unpon build", Required = false)]
+        [Option("z", "generatePackages", HelpText = "True to generate msbuild packages unpon build", Required = false, DefaultValue = false)]
         public bool GeneratePackagesOnBuild { get; set; }
 
         /// <summary>

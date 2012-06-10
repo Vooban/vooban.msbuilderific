@@ -84,6 +84,8 @@ namespace MsBuilderific.Core
             var serviceStringBuilder = new StringBuilder();
             var preServiceStringBuilder = new StringBuilder();
             var postServiceStringBuilder = new StringBuilder();
+            
+            var properties = GetVisitorsProperties();
 
             foreach (var vsnetProject in dependencyOrder)
             {
@@ -96,7 +98,7 @@ namespace MsBuilderific.Core
                 sortedVisitors.ToList().ForEach(v =>
                                       {
                                           if (v == null || !v.ShallExecute(coreOptions))
-                                              return;
+                                              return;                                          
 
                                           cleanStringBuilder.AppendLine(v.PreVisitCleanTarget(currentVisualStudioProject, coreOptions));
                                           cleanStringBuilder.AppendLine(v.VisitCleanTarget(currentVisualStudioProject, coreOptions));
@@ -132,10 +134,30 @@ namespace MsBuilderific.Core
             var clean = Regex.Replace(cleanStringBuilder.ToString(), @"(?m)^[ \t]*\r?\n", string.Empty, RegexOptions.Multiline);
             var build = Regex.Replace(buildStringBuilder.ToString(), @"(?m)^[ \t]*\r?\n", string.Empty, RegexOptions.Multiline);
             var service = Regex.Replace(serviceStringBuilder.ToString(), @"(?m)^[ \t]*\r?\n", string.Empty, RegexOptions.Multiline);
-            var output = string.Format(Properties.Resources.msbuildtemplate, coreOptions.CopyOutputTo, clean, build, service);
 
-            output = output.Replace("$OutputPath$", coreOptions.MsBuildFileOuputPath);
+            var propertiesBuilder = new StringBuilder();
+            foreach(var property in properties)
+                propertiesBuilder.AppendLine(string.Format("        <{0}>{1}</{0}>", property.Key, property.Value));
+
+            var output = string.Format(Properties.Resources.msbuildtemplate, coreOptions.CopyOutputTo, propertiesBuilder.ToString(), clean, build, service);
+
             File.WriteAllText(coreOptions.MsBuildOutputFilename, output);
+        }
+
+        private Dictionary<string, string> GetVisitorsProperties()
+        {
+            var properties = new Dictionary<string, string>();
+            _visitors.ForEach(v =>
+                                  {
+                                      // Add the visitor properties to the property list
+                                      var visitorProperties = v.GetVisitorProperties();
+                                      if (visitorProperties != null)
+                                      {
+                                          foreach (var property in visitorProperties)
+                                              properties.Add(property.Key, property.Value);
+                                      }
+                                  });
+            return properties;
         }
 
         #endregion

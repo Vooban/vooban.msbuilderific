@@ -31,8 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommandLine">
-      <HintPath>..\packages\CommandLine.1.9.1.0\lib\CommandLine.dll</HintPath>
+    <Reference Include="CommandLine, Version=1.9.2.4, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CommandLineParser.1.9.2.41\lib\CommandLine.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
@@ -58,6 +59,7 @@
     <Compile Include="Build\CopyProjectOutputVisitor.cs" />
     <Compile Include="Build\CopyRessourcesVisitor.cs" />
     <Compile Include="Build\DeleteBinAfterPackagingVisitor.cs" />
+    <Compile Include="Build\MsBuildProjectVisitorOptions.cs" />
     <Compile Include="Build\MsDeployProjectVisitorOptions.cs" />
     <Compile Include="Build\MsTestsProjectVisitorOptions.cs" />
     <Compile Include="Build\CopyProjectOutputVisitorOptions.cs" />
