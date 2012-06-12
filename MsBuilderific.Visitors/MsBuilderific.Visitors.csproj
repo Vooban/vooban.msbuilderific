@@ -58,6 +58,7 @@
     <Compile Include="Build\CopyMsDeployPackagesVisitor.cs" />
     <Compile Include="Build\CopyProjectOutputVisitor.cs" />
     <Compile Include="Build\CopyRessourcesVisitor.cs" />
+    <Compile Include="Build\CopyToOptions.cs" />
     <Compile Include="Build\DeleteBinAfterPackagingVisitor.cs" />
     <Compile Include="Build\MsBuildProjectVisitorOptions.cs" />
     <Compile Include="Build\MsDeployProjectVisitorOptions.cs" />
@@ -68,12 +69,9 @@
     <Compile Include="Build\MsTestsProjectVisitor.cs" />
     <Compile Include="Clean\CleanBuildArtefactsVisitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VisualStudioProjectExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MsBuilderific.Contracts.Extensions\MsBuilderific.Contracts.Extensions.csproj">
-      <Project>{4015C3CE-BB18-4BCC-ADFB-BD44D41B67BE}</Project>
-      <Name>MsBuilderific.Contracts.Extensions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MsBuilderific.Contracts\MsBuilderific.Contracts.csproj">
       <Project>{D587634F-B89A-42C6-ADF4-637AC3CA09E2}</Project>
       <Name>MsBuilderific.Contracts</Name>

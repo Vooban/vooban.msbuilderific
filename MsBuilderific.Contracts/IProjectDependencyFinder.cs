@@ -60,9 +60,9 @@ namespace MsBuilderific.Contracts
         /// <param name="graph">
         /// The graph to persist
         /// </param>
-        /// <param name="filename">
-        /// The filename in which the graph willb e persisted
+        /// <param name="options">
+        /// The information that will be used to persist the graph
         /// </param>
-        void PersistGraph(AdjacencyGraph<VisualStudioProject, Edge<VisualStudioProject>> graph, string filename);
+        void PersistGraph(AdjacencyGraph<VisualStudioProject, Edge<VisualStudioProject>> graph, IMsBuilderificCoreOptions options);
     }
 }

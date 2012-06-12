@@ -20,17 +20,16 @@
 
     <PropertyGroup>         
         <ContinueOnError>False</ContinueOnError>
-        <DestinationFolder>{0}</DestinationFolder>
-{1}
+{0}
     </PropertyGroup>
 
     <ItemGroup>        
-{2}
+{1}
     </ItemGroup>
 
     <Target Name="Build" >
         <Message Text="Starting the build process for configuration $(Configuration)"/>
-{3}
+{2}
     </Target>
         
     <Target Name="Clean">
@@ -42,7 +41,7 @@
 
     <Target Name="BuildServices" >
         <Message Text="Starting to Build services"/>
-{4}
+{3}
     </Target>
 
     <Target Name="CleanServices">

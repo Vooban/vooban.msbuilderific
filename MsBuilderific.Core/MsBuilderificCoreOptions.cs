@@ -28,7 +28,7 @@ namespace MsBuilderific.Core
         /// <summary>
         /// Gets or sets a filename where the dependecy graph of your projetcs will be saved or nothing if you do not which to generate the .graphml file
         /// </summary>
-        [Option("g", "graph", HelpText = "The graph filename where the dependency graph will be saved", Required = false)]
+        [Option("g", "graph", DefaultValue = "projectDependency.graphml", HelpText = "The graph filename where the dependency graph will be saved", Required = false)]
         public string GraphFilename { get; set; }
 
         /// <summary>
@@ -44,27 +44,21 @@ namespace MsBuilderific.Core
         public string MsBuildOutputFilename { get; set; }
 
         /// <summary>
-        /// Gets or sets the directory where projects output (.dll, .exe, .config, .pdb, .xml) will be copied, or nothing to ingnore this
-        /// </summary>
-        [Option("x", "copyoutputto", HelpText = "The path where the build result will be copied", Required = false)]
-        public string CopyOutputTo { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating if we generate specific build/rebuild/clean targets for web projects
         /// </summary>
-        [Option("s", "servicespecifictarget", HelpText = "True to generate specific build target for web projects", Required = false)]
+        [Option("s", "servicespecifictarget", DefaultValue = false, HelpText = "True to generate specific build target for web projects", Required = false)]
         public bool GenerateSpecificTargetForWebProject { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating if MsBuilderific should look for .csproj
         /// </summary>
-        [Option("c", "csharp", HelpText = "True to support CSharp projects, false otherwise ", Required = false)]
+        [Option("c", "csharp", DefaultValue = true, HelpText = "True to support CSharp projects, false otherwise ", Required = false)]
         public bool CSharpSupport { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating if MsBuilderific should look for .vbproj
         /// </summary>
-        [Option("v", "vbnet", HelpText = "True to support Vb.NET projects, false otherwise ", Required = false)]
+        [Option("v", "vbnet", DefaultValue = true, HelpText = "True to support Vb.NET projects, false otherwise ", Required = false)]
         public bool VbNetSupport { get; set; }
 
         #endregion
@@ -86,7 +80,9 @@ namespace MsBuilderific.Core
             };
 
             help.AddPreOptionsLine("Usage : MsBuilderific.Console -r C:\\Sources -e C:\\Sources\\test.csproj;C:\\Sources\\Obsolete;");
+            help.AddPreOptionsLine("");
             help.AddOptions(this);
+            help.AddPostOptionsLine("\r\n"); 
 
             return help;
         }

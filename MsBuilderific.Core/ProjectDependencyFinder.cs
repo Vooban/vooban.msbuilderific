@@ -17,7 +17,6 @@ namespace MsBuilderific.Core
         #region Private Members
 
         private readonly List<String> _excludedPatterns = new List<String>();
-
         private readonly IEnumerable<IVisualStudioProjectLoader> _projectLoader;
 
         #endregion
@@ -60,7 +59,6 @@ namespace MsBuilderific.Core
                 _excludedPatterns.Remove(pattern);
         }
 
-
         /// <summary>
         /// Build the dependency graph between the projects in the root folder and optionnaly save the graph in a GraphML file
         /// </summary>
@@ -75,7 +73,7 @@ namespace MsBuilderific.Core
             var graph = GetDependencyGraph(coreOptions);
 
             if (!string.IsNullOrEmpty(coreOptions.GraphFilename))
-                PersistGraph(graph, coreOptions.GraphFilename);
+                PersistGraph(graph, coreOptions);
 
             return GetDependencyOrderFromGraph(graph);
         }
@@ -162,12 +160,12 @@ namespace MsBuilderific.Core
         /// <param name="graph">
         /// The graph to persist
         /// </param>
-        /// <param name="filename">
-        /// The filename in which the graph willb e persisted
+        /// <param name="options">
+        /// The core options used to get information about the graph to generate
         /// </param>
-        public void PersistGraph(AdjacencyGraph<VisualStudioProject, Edge<VisualStudioProject>> graph, string filename)
+        public void PersistGraph(AdjacencyGraph<VisualStudioProject, Edge<VisualStudioProject>> graph, IMsBuilderificCoreOptions options)
         {
-            using (var xwriter = XmlWriter.Create(filename))
+            using (var xwriter = XmlWriter.Create(options.GraphFilename))
                 graph.SerializeToGraphML<VisualStudioProject, Edge<VisualStudioProject>, AdjacencyGraph<VisualStudioProject, Edge<VisualStudioProject>>>(xwriter, s => s.AssemblyName, e => String.Format("{0} depends on {1}", e.Source.AssemblyName, e.Target.AssemblyName));
 
         }

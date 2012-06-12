@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using MsBuilderific.Contracts;
-using MsBuilderific.Contracts.Extensions;
 using MsBuilderific.Contracts.Visitors;
 
 namespace MsBuilderific.Visitors.Build
@@ -8,14 +7,17 @@ namespace MsBuilderific.Visitors.Build
     public class CopyRessourcesVisitor : BuildOrderVisitor
     {
         private readonly IVisualStudioProjectRessourceFinder _ressourceFinder;
+        private readonly CopyToOptions _options;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CopyRessourcesVisitor"/> class.
         /// </summary>
         /// <param name="ressourceFinder">The ressource finder.</param>
-        public CopyRessourcesVisitor(IVisualStudioProjectRessourceFinder ressourceFinder)
+        /// <param name="options">The copy visitor options</param>
+        public CopyRessourcesVisitor(CopyToOptions options, IVisualStudioProjectRessourceFinder ressourceFinder)
         {
             _ressourceFinder = ressourceFinder;
+            _options = options;
         }
 
         /// <summary>
@@ -27,7 +29,7 @@ namespace MsBuilderific.Visitors.Build
         /// </returns>
         public override bool ShallExecute(IMsBuilderificCoreOptions coreOptions)
         {
-            return coreOptions == null || !string.IsNullOrEmpty(coreOptions.CopyOutputTo);
+            return coreOptions == null || !string.IsNullOrEmpty(_options.CopyOutputTo);
         }
 
         /// <summary>

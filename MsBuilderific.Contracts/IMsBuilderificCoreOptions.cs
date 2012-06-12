@@ -31,11 +31,6 @@ namespace MsBuilderific.Contracts
         String MsBuildOutputFilename { get;  }
 
         /// <summary>
-        /// Gets or sets the directory where projects output (.dll, .exe, .config, .pdb, .xml) will be copied, or nothing to ingnore this
-        /// </summary>
-        String CopyOutputTo { get;  }
-
-        /// <summary>
         /// Gets or sets a value indicating if we generate specific build/rebuild/clean targets for web projects
         /// </summary>
         bool GenerateSpecificTargetForWebProject { get;  }

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.IO;
+using MsBuilderific.Contracts;
 
-namespace MsBuilderific.Contracts.Extensions
+namespace MsBuilderific.Visitors
 {
     /// <summary>
     /// Extension methods to standard the <see cref="VisualStudioProject"/> classes.

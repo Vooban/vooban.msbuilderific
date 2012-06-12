@@ -91,7 +91,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Resources\msbuildtemplate.xml" />
+    <None Include="Resources\msbuildtemplate.xml">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MsBuilderific.Common\MsBuilderific.Common.csproj">

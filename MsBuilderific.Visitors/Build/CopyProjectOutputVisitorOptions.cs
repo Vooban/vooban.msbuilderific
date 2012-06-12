@@ -1,9 +1,11 @@
-﻿using CommandLine;
+﻿using System;
+using CommandLine;
+using CommandLine.Text;
 using MsBuilderific.Contracts.Visitors;
 
 namespace MsBuilderific.Visitors.Build
 {
-    public class CopyProjectOutputVisitorOptions :IVisitorOptions
+    public class CopyProjectOutputVisitorOptions : CopyToOptions
     {
         /// <summary>
         /// Gets or sets a value indicating if copy pdb to the output location
@@ -31,6 +33,26 @@ namespace MsBuilderific.Visitors.Build
 
         [Option(null, "CopyEnabled", HelpText = "True to copy to the output location, false otherwise", Required = false, DefaultValue = true)]
         public bool CopyEnabled { get; set; }
+
+        #region Public Methods
+
+        [HelpOption("?", "help", HelpText = "Display MsBuilderific help")]
+        public String GetUsage()
+        {
+            var help = new HelpText(new HeadingInfo("Copy project output Visitor", null).ToString())
+            {
+                MaximumDisplayWidth = Console.WindowWidth,
+                Copyright = new CopyrightInfo("Vooban Inc.", 2011)
+            };
+
+            help.AddPreOptionsLine("");
+            help.AddOptions(this);
+            help.AddPostOptionsLine("\r\n"); 
+
+            return help;
+        }
+
+        #endregion
     }
 
 }

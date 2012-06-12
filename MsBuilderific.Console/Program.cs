@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using CommandLine;
+using CommandLine.Text;
 using Microsoft.Practices.ObjectBuilder2;
 using MsBuilderific.Common;
 using MsBuilderific.Contracts;
@@ -17,26 +20,15 @@ namespace MsBuilderific.Console
         {
             ConfigureContainer();
 
-            var options = Injection.Engine.Resolve<IMsBuilderificCoreOptions>(); 
+            var options = GetCommandLineOptions(args);
+            var buildOder = GetBuildOder(options);
+            var generator = Injection.Engine.Resolve<IMsBuildFileCore>();
 
-            if (args != null && args.Length>0)
-            {
-                var parserSettings = new CommandLineParserSettings(false, false, true, System.Console.Out);
-                var parser = new CommandLineParser(parserSettings);
+            generator.WriteBuildScript(buildOder, options);
+        }
 
-                if (!parser.ParseArguments(args, options, System.Console.Out))
-                    Environment.Exit(1);
-
-                var visitorOptions = Injection.Engine.ResolveAll<IVisitorOptions>();
-                visitorOptions.ForEach(v =>
-                {
-                    if (!parser.ParseArguments(args, v, System.Console.Out))
-                        Environment.Exit(1);
-
-                    Injection.Engine.RegisterInstance(v.GetType(), v);
-                });           
-            }
-
+        private static List<VisualStudioProject> GetBuildOder(IMsBuilderificCoreOptions options)
+        {
             var finder = Injection.Engine.Resolve<IProjectDependencyFinder>();
 
             if (options.ProjectDetectionExclusionPatterns != null)
@@ -45,10 +37,44 @@ namespace MsBuilderific.Console
                     finder.AddExclusionPattern(exclusion);
             }
 
-            var buildOder = finder.GetDependencyOrder(options);
-            var generator = Injection.Engine.Resolve<IMsBuildFileCore>();
+            return finder.GetDependencyOrder(options);
+        }
 
-            generator.WriteBuildScript(buildOder, options);
+        private static IMsBuilderificCoreOptions GetCommandLineOptions(string[] args)
+        {
+            var options = Injection.Engine.Resolve<IMsBuilderificCoreOptions>();
+            var visitorOptions = Injection.Engine.ResolveAll<IVisitorOptions>();
+            var writer = new StringWriter();
+
+            if (args != null && args.Length > 0)
+            {
+                var parserSettings = new CommandLineParserSettings(false, false, true, System.Console.Out);
+                var parser = new CommandLineParser(parserSettings);
+
+                if (!parser.ParseArguments(args, options, writer))
+                {
+                    visitorOptions.ForEach(v => parser.ParseArguments(args, v, writer));
+                    System.Console.WriteLine(writer.ToString());
+                    Environment.Exit(1);
+                }
+                else
+                {
+                    visitorOptions.ForEach(v =>
+                                               {
+                                                   if (!parser.ParseArguments(args, v, writer))
+                                                       Environment.Exit(1);
+
+                                                   Injection.Engine.RegisterInstance(v.GetType(), v);
+                                               });
+                }
+            }
+            else
+            {
+                var help = HelpText.AutoBuild(options, current => HelpText.DefaultParsingErrorsHandler((CommandLineOptionsBase) options, current));
+                System.Console.WriteLine(help);
+                Environment.Exit(2);
+            }
+            return options;
         }
 
         private static void ConfigureContainer()

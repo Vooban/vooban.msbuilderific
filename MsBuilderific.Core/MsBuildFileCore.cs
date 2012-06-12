@@ -20,10 +20,6 @@ namespace MsBuilderific.Core
 
         #endregion
 
-        #region Public Properties
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -139,7 +135,7 @@ namespace MsBuilderific.Core
             foreach(var property in properties)
                 propertiesBuilder.AppendLine(string.Format("        <{0}>{1}</{0}>", property.Key, property.Value));
 
-            var output = string.Format(Properties.Resources.msbuildtemplate, coreOptions.CopyOutputTo, propertiesBuilder.ToString(), clean, build, service);
+            var output = string.Format(Properties.Resources.msbuildtemplate, propertiesBuilder.ToString(), clean, build, service);
 
             File.WriteAllText(coreOptions.MsBuildOutputFilename, output);
         }

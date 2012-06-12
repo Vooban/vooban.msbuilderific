@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using MsBuilderific.Contracts;
-using MsBuilderific.Contracts.Extensions;
 using MsBuilderific.Contracts.Visitors;
 
 namespace MsBuilderific.Visitors.Build
@@ -30,7 +29,7 @@ namespace MsBuilderific.Visitors.Build
         /// </returns>
         public override bool ShallExecute(IMsBuilderificCoreOptions coreOptions)
         {
-            return coreOptions == null || !string.IsNullOrEmpty(coreOptions.CopyOutputTo);
+            return coreOptions == null || !string.IsNullOrEmpty(_options.CopyOutputTo);
         }
 
         /// <summary>
@@ -153,7 +152,8 @@ namespace MsBuilderific.Visitors.Build
                                      {"CopyConfig", _options.CopyConfig.ToString(CultureInfo.InvariantCulture)},
                                      {"CopyDll", _options.CopyDll.ToString(CultureInfo.InvariantCulture)},
                                      {"CopyCodeContracts", _options.CopyCodeContracts.ToString(CultureInfo.InvariantCulture)},
-                                     {"CopyRessources", _options.CopyRessources.ToString(CultureInfo.InvariantCulture)}
+                                     {"CopyRessources", _options.CopyRessources.ToString(CultureInfo.InvariantCulture)},
+                                     {"DestinationFolder",_options.CopyOutputTo}
                                  };
 
             return properties;
