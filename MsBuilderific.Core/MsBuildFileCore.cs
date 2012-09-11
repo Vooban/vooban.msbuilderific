@@ -122,10 +122,10 @@ namespace MsBuilderific.Core
             }
 
             buildStringBuilder.Insert(0, preBuildStringBuilder.ToString());
-            buildStringBuilder.Append(postBuildStringBuilder.ToString());
+            buildStringBuilder.Append(postBuildStringBuilder);
 
             serviceStringBuilder.Insert(0, preServiceStringBuilder.ToString());
-            serviceStringBuilder.Append(postServiceStringBuilder.ToString());
+            serviceStringBuilder.Append(postServiceStringBuilder);
             
             var clean = Regex.Replace(cleanStringBuilder.ToString(), @"(?m)^[ \t]*\r?\n", string.Empty, RegexOptions.Multiline);
             var build = Regex.Replace(buildStringBuilder.ToString(), @"(?m)^[ \t]*\r?\n", string.Empty, RegexOptions.Multiline);

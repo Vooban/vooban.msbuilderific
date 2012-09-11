@@ -6,3 +6,6 @@ obj
 TestResults
 *.user
 *.suo
+
+# Resharper
+_ReSharper.*

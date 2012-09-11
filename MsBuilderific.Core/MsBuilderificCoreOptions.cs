@@ -9,7 +9,7 @@ namespace MsBuilderific.Core
     /// <summary>
     /// Command line switches which can be used by the program
     /// </summary>
-    internal class MsBuilderificCoreOptions : IMsBuilderificCoreOptions
+    internal class MsBuilderificCoreOptions : CommandLineOptionsBase, IMsBuilderificCoreOptions
     {
         #region Public Properties
 
@@ -85,7 +85,7 @@ namespace MsBuilderific.Core
             help.AddPostOptionsLine("\r\n"); 
 
             return help;
-        }
+        }        
 
         #endregion
     }

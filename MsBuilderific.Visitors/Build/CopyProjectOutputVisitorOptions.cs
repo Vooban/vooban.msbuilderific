@@ -1,7 +1,6 @@
 ﻿using System;
 using CommandLine;
 using CommandLine.Text;
-using MsBuilderific.Contracts.Visitors;
 
 namespace MsBuilderific.Visitors.Build
 {

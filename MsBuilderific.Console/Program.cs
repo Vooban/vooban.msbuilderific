@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using CommandLine;
 using CommandLine.Text;
 using Microsoft.Practices.ObjectBuilder2;
@@ -70,8 +69,23 @@ namespace MsBuilderific.Console
             }
             else
             {
-                var help = HelpText.AutoBuild(options, current => HelpText.DefaultParsingErrorsHandler((CommandLineOptionsBase) options, current));
-                System.Console.WriteLine(help);
+                var commandLineOptionsCore = options as CommandLineOptionsBase;
+                if (commandLineOptionsCore != null)
+                {
+                    var help = HelpText.AutoBuild(commandLineOptionsCore, current => HelpText.DefaultParsingErrorsHandler(commandLineOptionsCore, current));
+                    System.Console.WriteLine(help);
+
+                    visitorOptions.ForEach(v =>
+                        {
+                            var visitorOptionBase = v as CommandLineOptionsBase;
+                            if (visitorOptionBase == null) 
+                                return;
+
+                            help = HelpText.AutoBuild(v, current => HelpText.DefaultParsingErrorsHandler(visitorOptionBase, current));
+                            System.Console.WriteLine(help);
+                        });
+                }
+
                 Environment.Exit(2);
             }
             return options;
